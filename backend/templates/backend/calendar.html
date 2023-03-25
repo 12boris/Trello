@@ -1,0 +1,71 @@
+{% extends "backend/base.html" %} 
+{% load static %}
+
+{% block content %}
+
+<form class="container calendar-container" method="post" style="padding: 20px;">
+    {% csrf_token %}
+
+    <h2>календарь</h2>
+    
+    <h5>методология Бенджамина Франклина.</h5>
+    <ul>
+        <li>Воздержание - не употряблять что-либо через чур</li>
+        <li>Порядок - соблюдать весь распорядок дня</li>
+        <li>Бережливость - не тратить больше нужного</li>
+        <li>Трудолюбие - выполнять больше нужного</li>
+    </ul>
+
+    <div class="table-container">
+        <table class="table" style="width: 132px;border: 1px solid black;">
+            <thead>
+                <tr class="calender-head-col">
+                    <th scope="col" style="height: 38px;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Воздержание</th>
+                </tr>
+                <tr>
+                    <th scope="row">Порядок</th>
+                </tr>
+                <tr>
+                    <th scope="row">Бережливость</th>
+                </tr>
+                <tr>
+                    <th scope="row">Трудолюбие</th>
+                </tr>
+            </tbody>
+        </table>
+
+        {% for week in weeks %}
+        <table class="table input-table" style="width: 42px;border: 1px solid black;border-left: none;">
+            <thead>
+                <tr class="calender-head-col">
+                    <th scope="col" style="height: 38px;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <!-- <th scope="row"><input name="first" checked="{% if week.day.first_is_active %}True{% endif %}" type="radio"></th> -->
+                </tr>
+                <tr>
+                    <th scope="row"><input name="second" type="radio"></th>
+                </tr>
+                <tr>
+                    <th scope="row"><input name="third" type="radio"></th>
+                </tr>
+                <tr>
+                    <th scope="row"><input name="fourth" type="radio"></th>
+                </tr>
+            </tbody>
+        </table>
+        {% endfor %}
+        <button style="position:absolute;top:230px;" type="submit" class="comment-button">Сохранить</button>
+
+        <a href="{% url 'backend:day_add' %}" class="day-add-button">Создать новый день</a>
+    </div>
+</form>
+
+{% endblock %}

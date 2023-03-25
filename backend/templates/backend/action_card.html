@@ -1,0 +1,106 @@
+{% extends "backend/base.html" %} 
+{% load static %}
+
+{% block content %}
+
+<div class="container action-container">
+    
+    <a class="action-close" href="{% url 'backend:index' %}">
+        <img src="{% static 'icons/icon-close-action.png' %}" class="icon-plus">
+    </a>
+    <div class="card action-card">
+        <div class="card-body card-body-action">
+            <div class="left-action-block">
+                <h3 class="card-title">{{ action.name }}</h3>
+                <h6 class="card-subtitle mb-2 text-muted">в карте {{ action.card.name }}</h6>
+                <h5 class="card-title">Описание</h5>
+                <p class="card-text">{{ action.describe }}</p>
+                <h5 class="card-title">Дата</h5>
+                <p class="card-text">{{ action.date }}</p>
+
+                <h5>Блоки</h2>
+                <ul class="action-menu">
+                    <li><button id="main">главная</button></li>
+                    <li><button id="comment">комментарии</button></li>
+                </ul>
+
+                <h4>Прогресс</h4>
+                <form method="post" action="{% url 'backend:action_edit' action.pk %}" class="card-add-form" 
+                style="position: relative;width: 275px;">
+                    {% csrf_token %}
+                    <textarea class="card-add-textarea" name="progress" placeholder="изменитьпрогресс" style="left: 6px;"></textarea>
+                    <button class="card-add-button" type="submit" style="right: 5px;width: 120px;">Изменить</button>
+                </form>
+
+                <button class="card-add-button" type="button" data-bs-toggle="modal" style="right: 10px;width: 275px;" data-bs-target="#action">Изменить</button>
+            </div>
+
+            <div class="right-action-block">
+                
+                <div class="action-main">   
+                    <h3>Прогресс</h3>
+                    <div class="pie animate no-round" style="--p:{{ action.progress }};{% if action.progress == 100 %}--c:#5ec865;
+                    {% elif date == action.date %}--c:#e12424;{% else %}--c:#799aff;{% endif %}--b:15px"> {{ action.progress }}%</div>
+                </div>
+
+                <div class="action-comment" style="display:none;">
+                    <h5 class="card-title">Комментарии</h5>
+                    <form class="mb-3 comment-box" method="post" action="{% url 'backend:comment_add' action.pk %}">
+                        {% csrf_token %}
+                        <input class="comment-input" name="comment" placeholder="Комментарий">
+                        <button type="submit" class="comment-button">Сохранить</button>
+                    </form>
+                    {% for comment in comments %}
+                    <div style="margin-bottom: 10px;" class="comment">
+                        <div class="comment-header">
+                            <p style="font-size: 15px;" class="comment-date">{{ comment.author }} <span style="display: inline-block;min-width: 4px;"></span> {{ comment.created_at }}</p>
+                            <span style="display: inline-block;min-width: 10px;"></span>
+                            <a href="{% url 'backend:comment_delete' comment.pk %}">удалить</a>
+                        </div>
+                        <div class="comment-box" style="padding: 8px 12px;width:400px;height:max-content;">
+                            <p style="font-size: 16px;">{{ comment.comment }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal action -->
+    <div class="modal fade" id="action" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top: 100px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <form method="post" action="{% url 'backend:action_edit' action.pk %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Изменение данных действия</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Название</label>
+                            <input name="name" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.name }}">
+                            
+                            <label for="exampleFormControlInput1" class="form-label">Дата</label>
+                            <input name="date" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.date }}">
+
+                            <label for="exampleFormControlInput1" class="form-label">Описание</label>
+                            <input name="describe" class="form-control" id="exampleFormControlInput1" 
+                            style="height: 100px;" placeholder="{{ action.describe }}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Изменить</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+{% endblock %}

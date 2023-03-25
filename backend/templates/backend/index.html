@@ -1,0 +1,113 @@
+{% extends "backend/base.html" %} 
+{% load static %}
+
+{% block content %}
+
+<div class="main-container">
+    <div class="main-cont">
+
+        <div class="container text-center main card-container">
+            <div class="row">
+                
+                {% for item in card.values %}
+
+                <div class="card" style="width: 18rem;height: max-content;">
+
+                    <a href="{% url 'backend:card_delete' item.card.pk %}" class="delete_card">
+                        <img src="{% static 'icons/icon-minus.png' %}" style="width: 20px;height: 20px;">
+                    </a>
+
+                    <div class="blur-block"></div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.card.name }}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush card-cont-action">
+
+                        {% for act in item.action %}
+                        <li class="li-action">
+                            <div class="progress-div-action" style="width: {{ act.progress }}%;
+                            {% if date == act.date %}background-color: red;{% endif %}"></div>
+                            <a href="{% url 'backend:action_card' act.pk %}" style="color: var(--ds-text,inherit);">{{ act.name }}</a>
+
+                            <a href="{% url 'backend:action_delete' act.pk %}" class="delete_action">
+                                <img src="{% static 'icons/icon-minus.png' %}" style="width: 20px;height: 20px;">
+                            </a>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                    <div class="card-body">
+                        <img src="{% static 'icons/icon-plus.png' %}" class="icon-plus">
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="card-link" data-bs-toggle="modal" data-bs-target="#action" style="border: none; outline: none;">
+                            Добавить действие
+                        </button>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+                <div class="card" style="width: 18rem;background: none;padding:0;">
+                    <div class="link-add">
+                        <div class="card-body body-link-add">
+
+                            <img src="{% static 'icons/icon-plus-white.png' %}" class="icon-plus" style="width:25px;height:25px;">
+                            <button type="submit" class="card-link-add" style="border: none; outline: none;">
+                                Добавить карточку
+                            </button>
+
+                            <form method="post" action="{% url 'backend:card_add' %}" style="display: none;" class="card-add-form">
+                                {% csrf_token %}
+                                <textarea class="card-add-textarea" name="name" placeholder="Ввести заголовок списка"></textarea>
+                                <button class="card-add-button" type="submit">создать</button>
+                                <a class="card-add-icon" href="{% url 'backend:index' %}">
+                                    <img src="{% static 'icons/icon-close.png' %}" class="icon-plus">
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal action -->
+                <div class="modal fade" id="action" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <form method="post" action="{% url 'backend:action_add' %}">
+                                {% csrf_token %}
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Название идеи</label>
+                                        <input name="name-card" class="form-control" id="exampleFormControlInput1">
+
+                                        <label for="exampleFormControlInput1" class="form-label">Название</label>
+                                        <input name="name" class="form-control" id="exampleFormControlInput1">
+                                        
+                                        <label for="exampleFormControlInput1" class="form-label">Дата</label>
+                                        <input name="date" class="form-control" id="exampleFormControlInput1">
+
+                                        <label for="exampleFormControlInput1" class="form-label">Описание</label>
+                                        <input name="describe" class="form-control" id="exampleFormControlInput1" style="height: 100px;">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Создать</button>
+                                </div>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

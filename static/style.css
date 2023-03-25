@@ -1,0 +1,493 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,300,400,700');
+
+
+/* круговая диаграмма */
+
+@property --p{
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+  
+  .pie {
+    --p:20;
+    --b:22px;
+    --c:darkred;
+    --w:150px;
+    
+    width:var(--w);
+    aspect-ratio:1;
+    position:relative;
+    display:inline-grid;
+    margin:5px;
+    place-content:center;
+    font-size:25px;
+    font-weight:bold;
+    font-family:sans-serif;
+  }
+  .pie:before,
+  .pie:after {
+    content:"";
+    position:absolute;
+    border-radius:50%;
+  }
+  .pie:before {
+    inset:0;
+    background:
+      radial-gradient(farthest-side,var(--c) 98%,#0000) top/var(--b) var(--b) no-repeat,
+      conic-gradient(var(--c) calc(var(--p)*1%),#0000 0);
+    -webkit-mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),#000 calc(100% - var(--b)));
+            mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),#000 calc(100% - var(--b)));
+  }
+  .pie:after {
+    inset:calc(50% - var(--b)/2);
+    background:var(--c);
+    transform:rotate(calc(var(--p)*3.6deg)) translateY(calc(50% - var(--w)/2));
+  }
+  .animate {
+    animation:p .s .5s both;
+  }
+  .no-round:before {
+    background-size:0 0,auto;
+  }
+  .no-round:after {
+    content:none;
+  }
+  @keyframes p {
+    from{--p:0}
+  }
+
+/* end */
+
+.link{
+    text-decoration: none;
+}
+
+*{
+    text-decoration: none !important;
+}
+
+.navbar-brand, .nav-link, .nav-link.active,
+.navbar-text{
+    color: white !important;
+}
+
+.main-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.right-menu{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: #4c5b88;
+    border: 1px solid #69759b;
+    border-right: 2px solid #69759b;
+    padding: 20px;
+    padding-top: 50px;
+    font-size: 17px;
+    font-family: 'Montserrat' !important;
+    font-weight: 600;
+    color: #fff;  
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.right-menu ul li{
+    margin-bottom: 20px;
+    padding: 10px 40px 10px 40px;
+    transform: skew(-15deg);
+    border: 1px solid #69759b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .3s;
+}
+
+.right-menu ul li:hover{
+    background-color: #69759b;
+}
+
+.right-menu ul li a{
+    padding: 0;
+    margin: 0;
+    transform: skew(15deg);
+    color: white;
+}
+
+.main-cont{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.main-image{
+    position: absolute;
+    top: 0;
+    left: 280px;
+    width: calc(100% - 280px);
+    height: 100%;
+}
+
+/* карточка */
+
+.card-container{
+    position: absolute;
+    top: 100px;
+    left: 320px;
+}
+
+.card{
+    background-color: #ffffffb0;
+    border: none;
+    margin-right: 20px;
+}
+
+.card-cont-action{
+    width: inherit;
+    border: none !important;
+    max-height: 250px;
+    overflow: hidden;
+}
+
+.li-action{
+    position: relative;
+    width: 90%;
+    border: 1px solid rgb(39, 39, 39);
+    background-color: var(--ds-surface-raised,#fff);
+    border: none;
+    border-radius: 3px 3px 0 0;
+    box-shadow: var(--ds-shadow-raised,0 1px 0 #091e4240);
+    margin-bottom: 8px;
+    padding: 5px;
+    list-style-type: none;
+}
+
+.card-link{
+    color: #5e6c84;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    background: none;
+    margin: 0;
+    padding: 0;
+}
+
+.card-link-add{
+    color: #f8fbff;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 20px;
+    background: none;
+    padding: 0;
+}
+
+.body-link-add{
+    position: relative;
+    top: -7px;
+    border-radius: 5px;
+    transition: .3s;
+}
+
+.link-add{
+    position: relative;
+    background-color: #ffffff4f;
+    width: 240px;
+    height: 40px;
+    border-radius: 4px;
+    transition: .3s;
+}
+
+.link-add:hover{
+    background: #ffffff7a;
+}
+
+.icon-plus{
+    position: relative;
+    top: -2px;
+    width: 18px;
+    height: 18px;
+}
+
+.delete_card{
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    display: inline;
+    padding: 3px;
+    border-radius: 3px;
+    transition: .3s;
+}
+
+.delete_card:hover{
+    background: #f4f5f7;
+}
+
+.delete_action{
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    visibility: hidden;
+}
+
+.li-action:hover .delete_action{
+    visibility: visible;
+}
+
+.card-add-form{
+    display: block;
+    position: absolute;
+    top: 7px;
+    left: 0;
+    width: 100%;
+    height: 89px;
+    background: #ebecf0c7;
+    border-radius: 5px;
+}
+
+.card-add-textarea{
+    position: relative;
+    top: 6px;
+    width: 95%;
+    height: 40px;
+    background: white;
+    border: none;
+    resize: none;
+    outline: inherit;
+    line-height: 31px;
+    padding-left: 10px;
+    border: 2px solid #0079bf;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.card-add-button{
+    position: relative;
+    right: 46px;
+    margin: 11px;
+    background: #0079bf;
+    border: none;
+    border-radius: 5px;
+    width: 100px;
+    height: 32px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+}
+
+.card-add-icon{
+    position: relative;
+    right: 55px;
+    background: none;
+    border: none;
+}
+
+.action-container{
+    position: absolute;
+    top: 100px;
+    left: 320px;
+    width: 1000px;
+    height: 800px;
+}
+
+.action-card{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #ffffff91;
+    backdrop-filter: blur(5px);
+    border-radius: 3px;
+}
+
+.card-body-action{
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 40px;
+    padding-top: 25px;
+}
+
+.progress-div-action{
+    position: absolute;
+    height: 2px;
+    bottom: -1px;
+    left: 0;
+    background-color: green;
+}
+
+.comment-box{
+    padding: 8px 12px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    width: 400px;
+    height: 94px;
+    background: white;
+    border-radius: 7px;
+    box-shadow: var(--ds-shadow-raised,0 1px 0 #091e4240);
+}
+
+.comment-input{
+    position: relative;
+    width: 95%;
+    height: 40px;
+    background: white;
+    border: none;
+    resize: none;
+    outline: inherit;
+    line-height: 31px;
+    padding-left: 6px;
+    overflow: hidden;
+    font-size: 15px;
+}
+
+.comment-button{
+    position: relative;
+    margin: 3px;
+    background: #0079bf;
+    border: none;
+    border-radius: 5px;
+    width: 100px;
+    height: 32px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: white;
+}
+
+.comment-header{
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.comment p{
+    margin: 4px;
+}
+
+.comment a{
+    margin-top: 1px;
+    color: #5e6c84;
+    text-decoration: underline !important;
+}
+
+.left-action-block{
+    position: relative;
+    left: 4px;
+    width: 35%;
+    height: 100%;
+}
+
+.right-action-block{
+    width: 65%;
+    height: 100%;
+    padding: 2px 0 0 40px;
+    border-left: 1px solid #ffffff9c;
+}
+
+.action-menu{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100px;
+}
+
+.action-menu li{
+    margin-bottom: 10px;
+}
+
+.action-menu li button{
+    background: none;
+    border: none;
+    color: black;
+    text-decoration: underline !important;
+    padding: 0;
+}
+
+.action-close{
+    position: absolute;
+    top: 9px;
+    right: 20px;
+    z-index: 10;
+    border-radius: 50%;
+    padding: 5px;
+    transition: .3s;
+}
+
+.action-close:hover{
+    transform: rotate(-90deg);
+}   
+
+.action-close img{
+    width: 30px;
+    height: 30px;
+}
+
+/* calendar -------------------------- */
+
+.calendar-container{
+    position: absolute;
+    top: 100px;
+    left: 320px;
+    width: 1000px;
+    height: 800px;
+    border-radius: 5px;
+    background: #ffffff91;
+    backdrop-filter: blur(5px);
+}
+
+.calender-head-col th{
+    width: 30px;
+}
+
+.table th, td, tr{
+    border: 1px solid black;
+}
+
+.table-container{
+    position: relative;
+    width: 100%;
+    height: 220px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+.input-table th, td, tr{
+    border: 1px solid black;
+    border-left: none;
+}
+.input-table input{
+    position: relative;
+    top: 5px;
+    left: 6px;
+}
+
+.day-add-button{
+    position: absolute;
+    top: 330px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 40px;
+    background: #0079bf;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+}
