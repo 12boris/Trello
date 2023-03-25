@@ -13,6 +13,7 @@ urlpatterns = [
 
     path("calendar/", backend.calendar, name="calendar"),
     path("day_add/", backend.day_add, name="day_add"),
+    path("day_edit/", backend.day_edit, name="day_edit"),
 
     path("card_add/", backend.card_add, name="card_add"),
     path("card_delete/<int:pk>/", backend.card_delete, name="card_delete"),

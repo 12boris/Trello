@@ -46,22 +46,15 @@ class Comment(DataTimeModel):
 
     def __str__(self) -> str:
         return f'{self.author} {self.comment}'
-
-
-class Week(DataTimeModel):
-    number = models.IntegerField(verbose_name='Неделя', default=1)
-
-    def __str__(self) -> str:
-        return f'{self.number}'
-
+    
 
 class Day(DataTimeModel):
     date = models.DateField(verbose_name='Дата')
+    number = models.IntegerField(verbose_name='Номер', default=1)
     first_is_active = models.BooleanField(verbose_name='Воздержание', default=False)
     second_is_active = models.BooleanField(verbose_name='Порядок', default=False)
     third_is_active = models.BooleanField(verbose_name='Бережливость', default=False)
     fourth_is_active = models.BooleanField(verbose_name='Трудолюбие', default=False)
-    week = models.ForeignKey(Week, verbose_name='Неделя', on_delete=models.CASCADE, default="")
 
     def __str__(self) -> str:
         return f'{self.number}'

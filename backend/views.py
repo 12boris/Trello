@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.shortcuts import HttpResponseRedirect, render
-from .models import Card, Action, Comment, Week, Day
+from .models import Card, Action, Comment, Day
 from authapp.models import BaseIdeinerUser
 from django.contrib.auth.decorators import user_passes_test
 import datetime
@@ -40,10 +40,23 @@ def main(request):
 
 def calendar(request):
     title = "Календарь"
-    weeks = Week.objects.all()
-    days = Day.objects.all().order_by("week")
+    days = Day.objects.all().order_by("pk")
 
-    content = {"title": title, "weeks": weeks, "media_url": settings.MEDIA_URL}
+    days_of_week = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']
+    weeks = []
+    week = []
+    a = 0
+
+    for i in days:
+        a += 1
+        week.append({"day": i, "days_of_week": days_of_week[a - 1]})
+
+        if a == 7:
+            weeks.append(week)
+            week = []
+            a = 0
+
+    content = {"title": title, "weeks": weeks, "media_url": settings.MEDIA_URL} 
 
     return render(request, "backend/calendar.html", content)
 
@@ -53,7 +66,6 @@ def calendar(request):
 
 def day_add(request):
     days = Day.objects.all()
-    weeks = Week.objects.all()
 
     if days:
         last_day_date = days.last().date
@@ -61,22 +73,35 @@ def day_add(request):
     
     else:
         date = (datetime.date.today()).strftime('%Y-%m-%d')
-    
-    try:
-        last_week_number = weeks.last().number
-
-    except:
-        Week.objects.create(number=1).save()
-        last_week_number = 1
 
     if len(days) % 7 == 0:
-        new_week = Week.objects.create(number=last_week_number + 1)
-        day = Day.objects.create(week=new_week, date=date)
+        day = Day.objects.create(date=date)
         day.save()
 
     else:
-        day = Day.objects.create(week=weeks.last(), date=date)
+        day = Day.objects.create(date=date)
         day.save()
+
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+def day_edit(request):
+
+    pk_list = [i.pk for i in Day.objects.all()]
+    four_words_list = ['first', 'second', 'third', 'fourth']
+
+    for pk in pk_list:
+        for word in four_words_list:
+            try:
+                if request.POST[f'{word}-{pk}']:
+                    day = Day.objects.filter(pk=pk).first()
+                    if word == 'first': day.first_is_active = True
+                    if word == 'second': day.second_is_active = True
+                    if word == 'third': day.third_is_active = True
+                    if word == 'fourth': day.fourth_is_active = True
+                    day.save()
+            except:
+                pass
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
@@ -148,12 +173,19 @@ def action_edit(request, pk):
         if request.POST["progress"]: action.progress = request.POST["progress"]
     except:pass
 
-    try:    
+    try:
         if request.POST["name"]: action.name = request.POST["name"]
-        if request.POST["date"]: action.date = request.POST["date"]
+        if request.POST["date"]: 
+            date = request.POST["date"]
+            if str(date).lower() == "завтра":
+                date = (datetime.date.today() + datetime.timedelta(days=1)).strftime('%d.%m.%y')
+
+            if str(date).lower() == "сегодня":
+                date = datetime.date.today().strftime('%d.%m.%y')
+            action.date = date
+
         if request.POST["describe"]: action.describe = request.POST["describe"]
-    except:
-        pass
+    except:pass
 
     action.save()
 

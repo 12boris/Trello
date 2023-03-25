@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<form class="container calendar-container" method="post" style="padding: 20px;">
+<form class="container calendar-container" action="{% url 'backend:day_edit' %}" method="post" style="padding: 20px;">
     {% csrf_token %}
 
     <h2>календарь</h2>
@@ -40,31 +40,46 @@
         </table>
 
         {% for week in weeks %}
-        <table class="table input-table" style="width: 42px;border: 1px solid black;border-left: none;">
-            <thead>
-                <tr class="calender-head-col">
-                    <th scope="col" style="height: 38px;"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <!-- <th scope="row"><input name="first" checked="{% if week.day.first_is_active %}True{% endif %}" type="radio"></th> -->
-                </tr>
-                <tr>
-                    <th scope="row"><input name="second" type="radio"></th>
-                </tr>
-                <tr>
-                    <th scope="row"><input name="third" type="radio"></th>
-                </tr>
-                <tr>
-                    <th scope="row"><input name="fourth" type="radio"></th>
-                </tr>
-            </tbody>
-        </table>
+            {% for day in week %}
+            <table class="table input-table" style="width: 42px;border: 1px solid black;border-left: none;">
+                <thead>
+                    <tr class="calender-head-col">
+                        <th scope="col" style="height: 38px;">{{ day.days_of_week }}</th>
+                    </tr>
+                    </thead>
+                    <tbody> 
+                    <tr>
+                        <th scope="row"><input name="first-{{day.day.pk}}" 
+                            {% if day.day.first_is_active == True %}checked{% endif %} type="checkbox">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input name="second-{{day.day.pk}}" 
+                            {% if day.day.second_is_active == True %}checked{% endif %} type="checkbox">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input name="third-{{day.day.pk}}"
+                            {% if day.day.third_is_active == True %}checked{% endif %}  type="checkbox">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input name="fourth-{{day.day.pk}}" {% if day.day.fourth_is_active == True %}checked{% endif %} 
+                            type="checkbox">
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+            {% endfor %}
         {% endfor %}
         <button style="position:absolute;top:230px;" type="submit" class="comment-button">Сохранить</button>
 
         <a href="{% url 'backend:day_add' %}" class="day-add-button">Создать новый день</a>
+    </div>
+
+    <div style="position:absolute;top: 600px;">
+        <p>по этой методологии каждый раз, когда не выполняется</p>
+        <p>один из пунктов, нужно ставить точку и начинать неделю заново</p>
     </div>
 </form>
 

@@ -12,7 +12,7 @@
         <div class="card-body card-body-action">
             <div class="left-action-block">
                 <h3 class="card-title">{{ action.name }}</h3>
-                <h6 class="card-subtitle mb-2 text-muted">в карте {{ action.card.name }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">в списке {{ action.card.name }}</h6>
                 <h5 class="card-title">Описание</h5>
                 <p class="card-text">{{ action.describe }}</p>
                 <h5 class="card-title">Дата</h5>
@@ -39,8 +39,9 @@
                 
                 <div class="action-main">   
                     <h3>Прогресс</h3>
-                    <div class="pie animate no-round" style="--p:{{ action.progress }};{% if action.progress == 100 %}--c:#5ec865;
-                    {% elif date == action.date %}--c:#e12424;{% else %}--c:#799aff;{% endif %}--b:15px"> {{ action.progress }}%</div>
+                    <div class="pie animate no-round" style="--p:{{ action.progress }};{% if action.progress == 0 %}--p:100;{% endif %}
+                    {% if action.progress == 100 %}--c:#5ec865;{% elif date == action.date %}--c:#e12424;
+                    {% elif action.progress == 0 %}--c:#538aaa;{% else %}--c:#799aff;{% endif %}--b:15px">{{ action.progress }}%</div>
                 </div>
 
                 <div class="action-comment" style="display:none;">
