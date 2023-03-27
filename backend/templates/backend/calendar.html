@@ -3,83 +3,86 @@
 
 {% block content %}
 
-<form class="container calendar-container" action="{% url 'backend:day_edit' %}" method="post" style="padding: 20px;">
+<form class="container calendar-container" action="{% url 'backend:day_edit' %}" method="post" style="padding:20px;padding-left:32px;">
     {% csrf_token %}
 
-    <h2>календарь</h2>
-    
-    <h5>методология Бенджамина Франклина.</h5>
-    <ul>
-        <li>Воздержание - не употряблять что-либо через чур</li>
-        <li>Порядок - соблюдать весь распорядок дня</li>
-        <li>Бережливость - не тратить больше нужного</li>
-        <li>Трудолюбие - выполнять больше нужного</li>
-    </ul>
+    <div class="left-action-block" style="width:52%;">
+        <h2 style="margin-bottom: 25px;">календарь</h2>
+        
+        <h5>методология Бенджамина Франклина.</h5>
+        <ul style="margin:0 0 35px -7px;list-style:none;">
+            <li>Воздержание - не употряблять что-либо через чур</li>
+            <li>Порядок - соблюдать весь распорядок дня</li>
+            <li>Бережливость - не тратить больше нужного</li>
+            <li>Трудолюбие - выполнять больше нужного</li>
+        </ul>
 
-    <div class="table-container">
-        <table class="table" style="width: 132px;border: 1px solid black;">
-            <thead>
-                <tr class="calender-head-col">
-                    <th scope="col" style="height: 38px;"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">Воздержание</th>
-                </tr>
-                <tr>
-                    <th scope="row">Порядок</th>
-                </tr>
-                <tr>
-                    <th scope="row">Бережливость</th>
-                </tr>
-                <tr>
-                    <th scope="row">Трудолюбие</th>
-                </tr>
-            </tbody>
-        </table>
-
-        {% for week in weeks %}
-            {% for day in week %}
-            <table class="table input-table" style="width: 42px;border: 1px solid black;border-left: none;">
+        <div class="table-container">
+            <table class="table" style="width: 132px;border: 1px solid black;">
                 <thead>
                     <tr class="calender-head-col">
-                        <th scope="col" style="height: 38px;">{{ day.days_of_week }}</th>
+                        <th scope="col" style="height: 38px;"></th>
                     </tr>
                     </thead>
-                    <tbody> 
+                    <tbody>
                     <tr>
-                        <th scope="row"><input name="first-{{day.day.pk}}" 
-                            {% if day.day.first_is_active == True %}checked{% endif %} type="checkbox">
-                        </th>
+                        <th scope="row">Воздержание</th>
                     </tr>
                     <tr>
-                        <th scope="row"><input name="second-{{day.day.pk}}" 
-                            {% if day.day.second_is_active == True %}checked{% endif %} type="checkbox">
-                        </th>
+                        <th scope="row">Порядок</th>
                     </tr>
                     <tr>
-                        <th scope="row"><input name="third-{{day.day.pk}}"
-                            {% if day.day.third_is_active == True %}checked{% endif %}  type="checkbox">
-                        </th>
+                        <th scope="row">Бережливость</th>
                     </tr>
                     <tr>
-                        <th scope="row"><input name="fourth-{{day.day.pk}}" {% if day.day.fourth_is_active == True %}checked{% endif %} 
-                            type="checkbox">
-                        </th>
+                        <th scope="row">Трудолюбие</th>
                     </tr>
                 </tbody>
             </table>
+            
+            {% for week in weeks %}
+                {% for day in week %}
+                <table class="table input-table" style="width: 42px;border: 1px solid black;border-left: none;">
+                    <thead>
+                        <tr class="calender-head-col">
+                            <th scope="col" style="height: 38px;">{{ day.days_of_week }}</th>
+                        </tr>
+                        </thead>
+                        <tbody> 
+                        <tr>
+                            <th scope="row"><input name="first-{{day.day.pk}}" 
+                                {% if day.day.first_is_active == True %}checked{% endif %} type="checkbox">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="row"><input name="second-{{day.day.pk}}" 
+                                {% if day.day.second_is_active == True %}checked{% endif %} type="checkbox">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="row"><input name="third-{{day.day.pk}}"
+                                {% if day.day.third_is_active == True %}checked{% endif %}  type="checkbox">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="row"><input name="fourth-{{day.day.pk}}" {% if day.day.fourth_is_active == True %}checked{% endif %} 
+                                type="checkbox">
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-        <button style="position:absolute;top:230px;" type="submit" class="comment-button">Сохранить</button>
-
-        <a href="{% url 'backend:day_add' %}" class="day-add-button">Создать новый день</a>
+            <button type="submit" class="comment-button settings-button-save">Сохранить</button>
+        </div>
     </div>
 
-    <div style="position:absolute;top: 600px;">
-        <p>по этой методологии каждый раз, когда не выполняется</p>
-        <p>один из пунктов, нужно ставить точку и начинать неделю заново</p>
+    <div class="right-action-block" style="width:47%;padding:5px 0 0 42px;">
+        <h3 style="margin-bottom: 20px;">прогресс</h3>
+        <div>
+            <p>по этой методологии каждый раз, когда не выполняется</p>
+            <p>один из пунктов, нужно ставить точку и начинать неделю заново</p>
+        </div>
     </div>
 </form>
 

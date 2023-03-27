@@ -7,7 +7,7 @@
     <div class="main-cont">
 
         <div class="container text-center main card-container">
-            <div class="row">
+            <div class="row" style="overflow-x: scroll;display: flex;flex-wrap: nowrap;height: 100%;">
                 
                 {% for item in card.values %}
 
@@ -23,13 +23,13 @@
                     </div>
                     <ul class="list-group list-group-flush card-cont-action">
 
-                        {% for act in item.action %}
+                        {% for act in item.action.values %}
                         <li class="li-action">
-                            <div class="progress-div-action" style="width: {{ act.progress }}%;
-                            {% if date == act.date %}background-color: red;{% endif %}"></div>
-                            <a href="{% url 'backend:action_card' act.pk %}" style="color: var(--ds-text,inherit);">{{ act.name }}</a>
+                            <div class="progress-div-action" style="width: {{ act.action.progress }}%;
+                            {% if act.date_is_bigger and act.action.progress != 100 %}background-color: red;{% endif %}"></div>
+                            <a href="{% url 'backend:action_card' act.action.pk %}" style="color: var(--ds-text,inherit);">{{ act.action.name }}</a>
 
-                            <a href="{% url 'backend:action_delete' act.pk %}" class="delete_action">
+                            <a href="{% url 'backend:action_delete' act.action.pk %}" class="delete_action">
                                 <img src="{% static 'icons/icon-minus.png' %}" style="width: 20px;height: 20px;">
                             </a>
                         </li>
@@ -51,20 +51,10 @@
                 <div class="card" style="width: 18rem;background: none;padding:0;">
                     <div class="link-add">
                         <div class="card-body body-link-add">
-
                             <img src="{% static 'icons/icon-plus-white.png' %}" class="icon-plus" style="width:25px;height:25px;">
-                            <button type="submit" class="card-link-add" style="border: none; outline: none;">
-                                Добавить карточку
-                            </button>
-
-                            <form method="post" action="{% url 'backend:card_add' %}" style="display: none;" class="card-add-form">
-                                {% csrf_token %}
-                                <textarea class="card-add-textarea" name="name" placeholder="Ввести заголовок списка"></textarea>
-                                <button class="card-add-button" type="submit">создать</button>
-                                <a class="card-add-icon" href="{% url 'backend:index' %}">
-                                    <img src="{% static 'icons/icon-close.png' %}" class="icon-plus">
-                                </a>
-                            </form>
+                            <a class="card-link-add" href="{% url 'backend:card_add' %}">
+                                Добавить день
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -77,18 +67,18 @@
                             <form method="post" action="{% url 'backend:action_add' %}">
                                 {% csrf_token %}
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Добавление действия</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Название идеи</label>
+                                        <label for="exampleFormControlInput1" required  class="form-label">Название идеи</label>
                                         <input name="name-card" class="form-control" id="exampleFormControlInput1">
 
-                                        <label for="exampleFormControlInput1" class="form-label">Название</label>
+                                        <label for="exampleFormControlInput1" required  class="form-label">Название</label>
                                         <input name="name" class="form-control" id="exampleFormControlInput1">
                                         
-                                        <label for="exampleFormControlInput1" class="form-label">Дата</label>
+                                        <label for="exampleFormControlInput1" required  class="form-label">Дата</label>
                                         <input name="date" class="form-control" id="exampleFormControlInput1">
 
                                         <label for="exampleFormControlInput1" class="form-label">Описание</label>

@@ -22,8 +22,6 @@
     margin:5px;
     place-content:center;
     font-size:25px;
-    font-weight:bold;
-    font-family:sans-serif;
   }
   .pie:before,
   .pie:after {
@@ -72,6 +70,28 @@
     color: white !important;
 }
 
+.top-menu{
+    font-size: 14px;
+    font-family: 'Montserrat' !important;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.nav-item{
+    padding: 0 10px 0 10px;
+    transform: skew(-15deg);
+    transition: .3s;
+}
+
+.nav-item:hover{
+    background-color: #001d4d;
+}
+
+.nav-link{
+    transform: skew(15deg);
+}
+
 .main-container{
     position: absolute;
     top: 0;
@@ -88,7 +108,7 @@
     left: 0;
     width: 280px;
     height: 100%;
-    background-color: #4c5b88;
+    background-color: hsl(225,29.3%,38.4%);
     border: 1px solid #69759b;
     border-right: 2px solid #69759b;
     padding: 20px;
@@ -99,8 +119,8 @@
     color: #fff;  
     letter-spacing: 1px;
     display: flex;
-    justify-content: center;
-    z-index: 10000;
+    justify-content: center;    
+    z-index: 1;
 }
 
 .right-menu ul li{
@@ -143,9 +163,22 @@
 
 .card-container{
     position: absolute;
-    top: 100px;
-    left: 320px;
+    top: 103px;
+    height: 89%;
+    left: 330px;
+    max-width: 100%;
 }
+
+.row::-webkit-scrollbar {
+    border-radius: 10px;
+    height: 12px;
+    background: #0000;
+}
+
+.row::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #c5c5c59c;
+  }
 
 .card{
     background-color: #ffffffb0;
@@ -173,9 +206,8 @@
 
 .card-link{
     color: #5e6c84;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 20px;
     background: none;
     margin: 0;
@@ -327,11 +359,10 @@
 
 .comment-box{
     padding: 8px 12px;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
-    width: 400px;
+    width: 375px;
     height: 94px;
     background: white;
     border-radius: 7px;
@@ -385,14 +416,15 @@
 .left-action-block{
     position: relative;
     left: 4px;
-    width: 35%;
+    width: 32%;
     height: 100%;
+    padding-right: 15px;
 }
 
 .right-action-block{
-    width: 65%;
+    width: 68%;
     height: 100%;
-    padding: 2px 0 0 40px;
+    padding: 2px 0 0 60px;
     border-left: 1px solid #ffffff9c;
 }
 
@@ -433,6 +465,12 @@
     height: 30px;
 }
 
+.under-action-text{
+    margin-bottom: 30px !important;
+    font-weight: 600;
+    color: var(--bs-secondary-color)!important;
+}
+
 /* calendar -------------------------- */
 
 .calendar-container{
@@ -444,6 +482,8 @@
     border-radius: 5px;
     background: #ffffff91;
     backdrop-filter: blur(5px);
+    display: flex;
+    flex-wrap: nowrap;
 }
 
 .calender-head-col th{
@@ -488,4 +528,50 @@
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
     font-size: 15px;
     font-weight: 500;
+}
+
+/* settings -------------------------- */
+
+.settings-add-form{
+    position: relative;
+    background: #ebecf0;
+    width: 87%;
+}
+
+.settings-add-form-input{
+    position: relative;
+    top: 5px;
+    left: 4px;
+    width: 97%;
+}
+
+.settings-wallpaper{
+    margin-top: 30px;
+    padding: 3px 0 1px 0;
+}
+
+.settings-button{
+    position: relative;
+    top: 7px;
+    border: none;
+    outline: none;
+    color: #001d4d;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 20px;
+    background: none;
+    margin: 15px 54px 0 10px;
+    padding: 0;
+    text-decoration: underline !important;
+}
+
+.settings-button-save{
+    position:absolute;
+    top: 215px;
+    left: -3px;
+    width: 92.4%;
+    letter-spacing: 1px;
+    font-size: 16px;
+    font-weight: 700;
 }

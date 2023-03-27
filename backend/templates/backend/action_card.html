@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="container action-container">
+<div class="container action-container" style="width:1120px;">
     
     <a class="action-close" href="{% url 'backend:index' %}">
         <img src="{% static 'icons/icon-close-action.png' %}" class="icon-plus">
@@ -12,44 +12,39 @@
         <div class="card-body card-body-action">
             <div class="left-action-block">
                 <h3 class="card-title">{{ action.name }}</h3>
-                <h6 class="card-subtitle mb-2 text-muted">в списке {{ action.card.name }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted under-action-text">в списке {{ action.card.name }}</h6>
+                <h5 class="card-title">Дата окончания дедлайна</h5>
+                <p class="card-text under-action-text">{{ action.date }}</p>
                 <h5 class="card-title">Описание</h5>
                 <p class="card-text">{{ action.describe }}</p>
-                <h5 class="card-title">Дата</h5>
-                <p class="card-text">{{ action.date }}</p>
 
-                <h5>Блоки</h2>
-                <ul class="action-menu">
-                    <li><button id="main">главная</button></li>
-                    <li><button id="comment">комментарии</button></li>
-                </ul>
+                <button class="card-add-button" type="button" data-bs-toggle="modal" 
+                style="right: 10px;width: 275px;margin-bottom: 40px;" data-bs-target="#action">Изменить</button>
 
                 <h4>Прогресс</h4>
                 <form method="post" action="{% url 'backend:action_edit' action.pk %}" class="card-add-form" 
                 style="position: relative;width: 275px;">
                     {% csrf_token %}
-                    <textarea class="card-add-textarea" name="progress" placeholder="изменитьпрогресс" style="left: 6px;"></textarea>
-                    <button class="card-add-button" type="submit" style="right: 5px;width: 120px;">Изменить</button>
+                    <input class="card-add-textarea" name="progress" placeholder="изменить прогресс" style="left: 6px;">
+                    <button class="card-add-button" type="submit" style="right: 5px;width: 120px;">Сохранить</button>
                 </form>
-
-                <button class="card-add-button" type="button" data-bs-toggle="modal" style="right: 10px;width: 275px;" data-bs-target="#action">Изменить</button>
             </div>
 
-            <div class="right-action-block">
+            <div class="right-action-block" style="display:flex;">
                 
-                <div class="action-main">   
-                    <h3>Прогресс</h3>
+                <div class="action-main" style="width:25%;">   
+                    <h4 style="display:flex;justify-content:center;margin-bottom: 22px;">прогресс</h4>
                     <div class="pie animate no-round" style="--p:{{ action.progress }};{% if action.progress == 0 %}--p:100;{% endif %}
-                    {% if action.progress == 100 %}--c:#5ec865;{% elif date == action.date %}--c:#e12424;
-                    {% elif action.progress == 0 %}--c:#538aaa;{% else %}--c:#799aff;{% endif %}--b:15px">{{ action.progress }}%</div>
+                    {% if action.progress == 100 %}--c:#5ec865;{% elif date_is_bigger %}--c:#e12424;
+                    {% elif action.progress == 0 %}--c:#95afff;{% else %}--c:#799aff;{% endif %}--b:15px">{{ action.progress }}%</div>
                 </div>
 
-                <div class="action-comment" style="display:none;">
-                    <h5 class="card-title">Комментарии</h5>
+                <div class="action-comment" style="width:60%;margin-left:65px;">
+                    <h4 class="card-title">комментарии</h4>
                     <form class="mb-3 comment-box" method="post" action="{% url 'backend:comment_add' action.pk %}">
                         {% csrf_token %}
                         <input class="comment-input" name="comment" placeholder="Комментарий">
-                        <button type="submit" class="comment-button">Сохранить</button>
+                        <button type="submit" class="comment-button">создать</button>
                     </form>
                     {% for comment in comments %}
                     <div style="margin-bottom: 10px;" class="comment">
@@ -58,7 +53,7 @@
                             <span style="display: inline-block;min-width: 10px;"></span>
                             <a href="{% url 'backend:comment_delete' comment.pk %}">удалить</a>
                         </div>
-                        <div class="comment-box" style="padding: 8px 12px;width:400px;height:max-content;">
+                        <div class="comment-box" style="padding: 8px 12px;width:375px;height:max-content;">
                             <p style="font-size: 16px;">{{ comment.comment }}</p>
                         </div>
                     </div>

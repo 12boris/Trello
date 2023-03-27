@@ -5,6 +5,7 @@ from .models import Card, Action, Comment, Day
 from authapp.models import BaseIdeinerUser
 from django.contrib.auth.decorators import user_passes_test
 import datetime
+import os, shutil
 
 
 def GenIdeasList(cards):
@@ -19,7 +20,21 @@ def GenIdeasList(cards):
     a = 0
     for card in cards:
         a += 1
-        sl_ideas[a] = {"action": Action.objects.filter(card=card).order_by("created_at"), "card": card}
+        action = Action.objects.filter(card=card).order_by("progress")
+        action_sl = {}
+        aa = 0
+
+        for act in action:
+            date = datetime.date.today().strftime('%d.%m.%Y')
+            try:
+                date_is_bigger = datetime.datetime.strptime(date, '%d.%m.%Y') > datetime.datetime.strptime(act.date, '%d.%m.%Y')
+            except:
+                date_is_bigger = datetime.datetime.strptime(datetime.date.today().strftime('%d.%m.%y'), '%d.%m.%y') > datetime.datetime.strptime(act.date, '%d.%m.%y')
+
+            aa += 1
+            action_sl[aa] = {"action": act, "date_is_bigger": date_is_bigger}
+
+        sl_ideas[a] = {"action": action_sl,"card": card}
 
     return sl_ideas
 
@@ -32,19 +47,20 @@ def main(request):
 
     card = GenIdeasList(Card.objects.all().order_by("created_at"))
     date = datetime.date.today().strftime('%d.%m.%y')
+    image = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")[0]
 
-    content = {"title": title, "card": card, "date": date, "media_url": settings.MEDIA_URL}
+    content = {"title": title, "card": card, "date": date, "image": image}
 
     return render(request, "backend/index.html", content)
 
 
 def calendar(request):
+    image = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")[0]
     title = "Календарь"
     days = Day.objects.all().order_by("pk")
 
     days_of_week = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']
-    weeks = []
-    week = []
+    weeks, week = [], []
     a = 0
 
     for i in days:
@@ -56,9 +72,37 @@ def calendar(request):
             week = []
             a = 0
 
-    content = {"title": title, "weeks": weeks, "media_url": settings.MEDIA_URL} 
+    content = {"title": title, "weeks": weeks, "image": image   } 
 
     return render(request, "backend/calendar.html", content)
+
+
+""" settings """
+
+
+def settings(request):
+    image = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")[0]
+    title = "Настройки"
+    
+    img = []
+
+    for file in os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\img"):
+        img.append(file)
+
+    content = {"title": title, "img": img, "image": image}
+
+    return render(request, "backend/settings.html", content)
+
+
+def change_image(request, name):
+
+    file = f"C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\img\\{name}"
+    dir = "C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image"
+    first_file = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")
+    os.remove(f"C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image\\{first_file[0]}")
+    shutil.copy(file, dir)
+
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
 """ дни """
@@ -111,10 +155,13 @@ def day_edit(request):
 
 def card_add(request):
 
-    name = request.POST['name']
     author = request.user.username
+    last_day = Card.objects.first().name
+    name = last_day.split(" ")
+    number = int(name[1]) + 1
+    new_name = name[0] + " " + str(number)
 
-    new_card = Card.objects.create(name=name, author=author)
+    new_card = Card.objects.create(author=author, name=new_name)
     new_card.save()
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
@@ -132,13 +179,18 @@ def card_delete(request, pk):
 
 
 def action_card(request, pk):
-
+    image = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")[0]
     title = "Действие"
     action = Action.objects.filter(pk=pk).first()
     comments = Comment.objects.filter(action=action)
     date = datetime.date.today().strftime('%d.%m.%Y')
+    
+    try:
+        date_is_bigger = datetime.datetime.strptime(date, '%d.%m.%Y') > datetime.datetime.strptime(action.date, '%d.%m.%Y')
+    except:
+        date_is_bigger = datetime.datetime.strptime(datetime.date.today().strftime('%d.%m.%y'), '%d.%m.%y') > datetime.datetime.strptime(action.date, '%d.%m.%y')
 
-    content = {"title": title, "action": action, "date": date, "comments": comments, "media_url": settings.MEDIA_URL}
+    content = {"title": title, "action": action, "date": date, "comments": comments, "image": image, "date_is_bigger": date_is_bigger}
 
     return render(request, "backend/action_card.html", content)
 
@@ -229,10 +281,11 @@ def comment_delete(request, pk):
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin(request):
+    image = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")[0]
     title = "Админка"
     
     card = Card.objects.all()
 
-    content = {"title": title, "card": card, "media_url": settings.MEDIA_URL}
+    content = {"title": title, "card": card, "image": image}
 
     return render(request, "backend/admin.html", content)

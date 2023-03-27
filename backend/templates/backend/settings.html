@@ -1,0 +1,50 @@
+{% extends "backend/base.html" %} 
+{% load static %}
+
+{% block content %}
+
+
+<div class="container action-container">
+    <div class="card action-card">
+        <div class="card-body card-body-action">
+            <div class="left-action-block" style="width:40%">
+                <h2>Настройки</h2>
+
+                <div class="settings-wallpaper">
+                    <h4>Обои</h4>
+                    
+                    <form method="post" action="/backend/card_add/" class="mb-3 card-add-form settings-add-form">
+                        <input class="form-control settings-add-form-input" type="file" id="formFileMultiple" multiple>
+                        <button type="submit" class="comment-button" style="margin:13px 0 0 6px;">Сохранить</button>
+
+                        <button type="button" class="settings-button" data-bs-toggle="modal" data-bs-target="#images">
+                            шаблоны
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="right-action-block" style="width:60%">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal action -->
+<div class="modal fade" id="images" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top: 100px;">
+    <div class="modal-dialog">
+        <div class="modal-content" style="display: block;width:587px;padding:20px;">
+
+            {% for image in img %}
+            <a href="{% url 'backend:change_image' image %}">
+                <img style="width:270px;height:140px;margin-bottom:4px;" src="/static/img/{{ image }}">
+            </a>
+            {% endfor %}
+            
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -19,6 +19,10 @@ class DataTimeModel(models.Model):
         abstract = True
 
 
+class MainImage(DataTimeModel):
+    date = models.ImageField(upload_to='{% static "use_image" %}', default="")
+
+
 class Card(DataTimeModel):
     author = models.CharField(verbose_name='Никнейм', max_length=22)
     name = models.CharField(verbose_name='Заголовок', max_length=255)

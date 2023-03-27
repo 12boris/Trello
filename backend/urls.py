@@ -10,6 +10,9 @@ urlpatterns = [
     path("", backend.main, name="index"),
     path("admin/", backend.admin, name="admin"),
     path("main/", backend.main, name="main"),
+    path("settings/", backend.settings, name="settings"),
+
+    path("change_image/<str:name>/", backend.change_image, name="change_image"),
 
     path("calendar/", backend.calendar, name="calendar"),
     path("day_add/", backend.day_add, name="day_add"),
