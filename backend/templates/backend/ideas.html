@@ -1,0 +1,102 @@
+{% extends "backend/base.html" %} 
+{% load static %}
+
+{% block content %}
+
+<div class="container action-container load-animate" style="width:1320px;">
+    
+    <div class="card action-card">
+        <div class="card-body card-body-action">
+            <div class="left-action-block" style="width: 38%;padding-right: 50px;height: 750px;overflow: hidden;">
+                <h2>Идеи на стадии задумки</h2>
+
+                <div class="idea-container">
+                    {% if inactive_ideas %}
+                        {% for idea in inactive_ideas %}
+                        <a href="{% url 'backend:idea_page' idea.pk %}">
+                            <div class="card-idea">
+                                <div style="width: 50%;padding-right: 15px;">
+                                    <h5>название</h5>
+                                    <p>{{ idea.name }}</p>
+                                    <h5>дедлайн</h5>
+                                    <p>{{ idea.final_date }}</p>
+                                    
+                                    <a class="card-add-button flex-center" href="{% url 'backend:activate_idea' idea.pk %}" style="right: 12px;width: 140px;">активировать</a>
+                                </div>
+                                <div style="width: 50%;display:flex;justify-content:center;flex-wrap: wrap;">
+                                    <h5>прогресс</h5>
+                                    <div class="pie animate no-round idea-progress" style="--p:{{ idea.progress }};{% if idea.progress == 0 %}--p:100;{% endif %}
+                                    {% if idea.progress == 100 %}--c:#5ec865;{% elif date_is_bigger %}--c:#e12424;
+                                    {% elif idea.progress == 0 %}--c:#95afff;{% else %}--c:#799aff;{% endif %}--b:10px">{{ idea.progress }}%</div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                    <h4 style="position: relative;left: -26%;top: 38%;">пока нет идей</h4>
+                    {% endif %}
+                </div>
+
+                <form method="post" action="{% url 'backend:idea_add' %}" class="block-add-idea" style="display: none;">
+                    {% csrf_token %}
+
+                    <a class="action-close" href="{% url 'backend:ideas' %}" style="top: 78px;right: 60px;">
+                        <img src="{% static 'icons/icon-close-action.png' %}" class="icon-plus" style="width:25px;height:25px;">
+                    </a>
+
+                    <label for="exampleFormControlInput1" required  class="form-label">Название</label>
+                    <input name="name" class="form-control" id="exampleFormControlInput1" style="margin-bottom: 10px;">
+                    
+                    <label for="exampleFormControlInput1" required  class="form-label">Дата дедлайна</label>
+                    <input name="date" class="form-control" id="exampleFormControlInput1" style="margin-bottom: 10px;">
+
+                    <label for="exampleFormControlInput1" class="form-label">Описание</label>
+                    <textarea name="describe" class="form-control" id="exampleFormControlInput1" style="height: 100px;resize: inherit;"></textarea>
+
+                    <button class="card-add-button" style="right: 10px;top: 10px;">Сохранить</button>
+                </form>
+
+                <button type="submit" class="card-add-button button-idea-add" style="right: 15px;">Добавить идею</button>
+            </div>
+
+            <div class="right-action-block"style="width:62%;padding-left: 45px;height: 93%;">
+                <h2>Текущие идеи</h2>
+
+                <div class="idea-container" style="padding: 0 10px 0 20px; margin-right: 10px;">
+                    {% if active_ideas %}
+                        {% for idea in active_ideas %}
+                        <a href="{% url 'backend:idea_page' idea.pk %}">
+                            <div class="card-idea">
+                                <div style="width: 200px;height: 125px;">
+                                    <h5>название</h5>
+                                    <p>{{ idea.name }}</p>
+                                    <h5>дедлайн</h5>
+                                    <p>{{ idea.final_date }}</p>
+                                </div>
+
+                                <div class="scroll" style="width: 200px;height: 125px;overflow-y: scroll;padding-right: 7px;">
+                                    <h5>участники</h5>
+                                    <p>banjbnadfjafdbjadnb</p>
+                                    <p>banjbnadfjafdbjadnb</p>
+                                    <p>banjbnadfjafdbjadnb</p>
+                                    <p>banjbnadfjafdbjadnb</p>
+                                </div>
+
+                                <div style="width: 50%;display:flex;justify-content:center;flex-wrap: wrap;">
+                                    <div class="pie animate no-round idea-progress" style="--p:{{ idea.progress }};{% if idea.progress == 0 %}--p:100;{% endif %}
+                                    {% if idea.progress == 100 %}--c:#5ec865;{% elif date_is_bigger %}--c:#e12424;
+                                    {% elif idea.progress == 0 %}--c:#95afff;{% else %}--c:#799aff;{% endif %}--b:10px">{{ idea.progress }}%</div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        <h4 style="position: relative;left: -38%;top: 41%;">пока нет идей</h4>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -23,6 +23,21 @@ class MainImage(DataTimeModel):
     date = models.ImageField(upload_to='{% static "use_image" %}', default="")
 
 
+""" действия выводся списком, это временно, надо будет исправить"""
+
+class Idea(DataTimeModel):
+    is_active = models.BooleanField(verbose_name='Активный', default=False)
+    author = models.CharField(verbose_name='Никнейм', max_length=22)
+    name = models.CharField(verbose_name='Заголовок', max_length=255)
+    describe = models.TextField(verbose_name='Содержание')
+    final_date = models.CharField(verbose_name='Дата окончания', max_length=255, default="")
+    progress = models.IntegerField(verbose_name='Прогресс', default=0)
+    actions = models.TextField(verbose_name='Действия', default="")
+
+    def __str__(self) -> str:
+        return f'{self.name}'
+
+
 class Card(DataTimeModel):
     author = models.CharField(verbose_name='Никнейм', max_length=22)
     name = models.CharField(verbose_name='Заголовок', max_length=255)

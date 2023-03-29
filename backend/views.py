@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.shortcuts import HttpResponseRedirect, render
-from .models import Card, Action, Comment, Day
+from .models import Card, Action, Comment, Day, Idea
 from authapp.models import BaseIdeinerUser
 from django.contrib.auth.decorators import user_passes_test
 import datetime
@@ -150,6 +150,88 @@ def day_edit(request):
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
+""" ideas """
+
+
+def ideas(request):
+    image = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")[0]
+    title = "Идеи"
+
+    inactive_ideas = Idea.objects.filter(is_active=False)
+    active_ideas = Idea.objects.filter(is_active=True)
+
+    content = {"title": title, "image": image, "inactive_ideas": inactive_ideas, "active_ideas": active_ideas}
+
+    return render(request, "backend/ideas.html", content)
+
+
+def idea_add(request):
+
+    name = request.POST['name']
+    final_date = request.POST['date']
+    describe = request.POST['describe']
+
+    new_idea = Idea.objects.create(name=name ,final_date=final_date, describe=describe)
+    new_idea.save()
+
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+def activate_idea(request, pk):
+
+    idea = Idea.objects.filter(pk=pk).first()
+    idea.is_active = True
+    idea.save()
+
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+def idea_page(request, pk):
+    image = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")[0]
+    title = "Страница идеи"
+
+    idea = Idea.objects.filter(pk=pk).first()
+    actions_list = idea.actions
+    actions = []
+
+    for pk in actions_list.split(" "):
+        try:
+            actions.append(Action.objects.filter(pk=pk).first())
+        except:
+            print("hello")
+
+    content = {"title": title, "image": image, "idea": idea, "actions": actions}
+
+    return render(request, "backend/idea_page.html", content)
+
+
+def idea_delete(request, pk):
+    image = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")[0]
+    title = "Идеи"
+
+    idea = Idea.objects.filter(pk=pk)
+    idea.delete()
+
+    inactive_ideas = Idea.objects.filter(is_active=False)
+    active_ideas = Idea.objects.filter(is_active=True)
+
+    content = {"title": title, "image": image, "inactive_ideas": inactive_ideas, "active_ideas": active_ideas}
+
+    return render(request, "backend/ideas.html", content)
+
+
+def action_to_idea(request, pk):
+
+    idea_name = request.POST["name"].strip()
+    idea = Idea.objects.filter(name=idea_name).first()
+
+    if str(pk) not in idea.actions:
+        idea.actions = idea.actions + " " + str(pk)
+    idea.save()
+
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
 """ карточки """
 
 
@@ -184,13 +266,18 @@ def action_card(request, pk):
     action = Action.objects.filter(pk=pk).first()
     comments = Comment.objects.filter(action=action)
     date = datetime.date.today().strftime('%d.%m.%Y')
+
+    for idea in Idea.objects.all():
+        if str(pk) in idea.actions.split(" "):
+            idea_action = idea.name
     
     try:
         date_is_bigger = datetime.datetime.strptime(date, '%d.%m.%Y') > datetime.datetime.strptime(action.date, '%d.%m.%Y')
     except:
         date_is_bigger = datetime.datetime.strptime(datetime.date.today().strftime('%d.%m.%y'), '%d.%m.%y') > datetime.datetime.strptime(action.date, '%d.%m.%y')
 
-    content = {"title": title, "action": action, "date": date, "comments": comments, "image": image, "date_is_bigger": date_is_bigger}
+    content = {"title": title, "action": action, "date": date, "comments": comments, "image": image, 
+               "date_is_bigger": date_is_bigger, "idea_action": idea_action}
 
     return render(request, "backend/action_card.html", content)
 
@@ -202,14 +289,14 @@ def action_add(request):
     
     name = request.POST['name']
     date = request.POST['date']
+    describe = request.POST['describe']
+    author = request.user.username
+
     if str(date).lower() == "завтра":
         date = (datetime.date.today() + datetime.timedelta(days=1)).strftime('%d.%m.%y')
 
     if str(date).lower() == "сегодня":
         date = datetime.date.today().strftime('%d.%m.%y')
-
-    describe = request.POST['describe']
-    author = request.user.username
 
     new_action = Action.objects.create(name=name, author=author, date=date, describe=describe, card=card)
     new_action.save()
@@ -262,6 +349,9 @@ def comment_add(request, pk):
     
     comment = request.POST['comment']
     author = request.user.username
+
+    if not comment:
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
     new_comment = Comment.objects.create(comment=comment, author=author, action=action)
     new_comment.save()

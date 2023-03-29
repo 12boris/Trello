@@ -48,7 +48,7 @@
             <ul style="list-style-type: none;padding: 0;">
                 <li><a href="{% url 'backend:index' %}">Главная</a></li>
                 <li><a href="{% url 'backend:calendar' %}">Календарь</a></li>
-                <li><a href="">что-что</a></li>
+                <li><a href="{% url 'backend:ideas' %}">Идеи</a></li>
                 <li><a href="">что-что</a></li>
                 <li><a href="">что-что</a></li>
             </ul>
@@ -59,50 +59,97 @@
         
         {% endblock %}
 
+        <script>
+
+            // action --------------------------
+
+            try{
+                button_action = document.getElementsByClassName('action-change-button')[0]
+                button_action.onclick = function(el){
+                    block = document.getElementsByClassName('modal-action-edit')[0]
+                    block.style.display = "block"
+                    console.log(block)
+                }
+            }
+            catch{
+                console.log("")
+            }
+
+            try{
+                btn_close = document.getElementsByClassName('btn-close-action')[0]
+                btn_close.onclick = function(el){
+                    modal_action = document.getElementsByClassName('modal-action-edit')[0]
+                    modal_action.style.display = "none"
+                }
+            }
+            catch{
+                console.log("")
+            }
+
+
+            let card_add_button = document.getElementsByClassName("card-link-add")
+            for (let i = 0; i < card_add_button.length; i++){
+                card_add_button[i].onclick = function(el){
+                    let card_add_form = card_add_button[i].parentNode
+    
+                    console.log(card_add_form, card_add_form.childNodes[5])
+    
+                    card_add_button[i].style.display = "none"
+                    card_add_button[i].parentNode.childNodes[1].style.display = "none"
+                    card_add_form.childNodes[5].style.display = "block"
+                }
+            }
+
+            // modal --------------------------
+
+            try{
+                button_action = document.getElementsByClassName('button-action')
+                for (let i = 0; i < button_action.length; i++){
+                    button_action[i].onclick = function(el){
+                        name = button_action[i].parentNode.parentNode.childNodes[5].childNodes[1].textContent
+                        modal_action = document.getElementsByClassName('modal-action')[0]
+                        name_input = modal_action.childNodes[1].childNodes[5].childNodes[1].childNodes[3]
+                        name_input.value = name
+                        modal_action.style.display = "block"
+                    }
+                }
+            }
+            catch{
+                console.log("")
+            }
+
+            try{
+                btn_close = document.getElementsByClassName('btn-close')[0]
+                btn_close.onclick = function(el){
+                    modal_action = document.getElementsByClassName('modal-action')[0]
+                    modal_action.style.display = "none"
+                }
+            }
+            catch{
+                console.log("")
+            }
+
+            // idea ----------------------------
+            
+            try{
+                button_idea = document.getElementsByClassName('button-idea-add')[0]
+                card_ideas = document.getElementsByClassName('idea-container')[0]
+                button_idea.onclick = function(el){
+                    block = document.getElementsByClassName('block-add-idea')[0]
+                    block.style.display = "block"
+                    button_idea.style.display = "none"
+                    card_ideas.style.display = "none"
+                }
+            }
+            catch{
+                console.log("")
+            }
+    
+        </script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 
     </body>
-
-    <script>
-
-        let card_add_button = document.getElementsByClassName("card-link-add")
-        for (let i = 0; i < card_add_button.length; i++){
-            card_add_button[i].onclick = function(el){
-                let card_add_form = card_add_button[i].parentNode
-
-                console.log(card_add_form, card_add_form.childNodes[5])
-
-                card_add_button[i].style.display = "none"
-                card_add_button[i].parentNode.childNodes[1].style.display = "none"
-                card_add_form.childNodes[5].style.display = "block"
-            }
-        }
-
-        // try{
-        //     let action_menu = document.querySelector(".action-menu").childNodes
-        //     block = document.getElementsByClassName('right-action-block')[0].childNodes
-        //     for (let i=0;i<action_menu.length;i++){
-        //         if (i % 2 != 0){
-        //             action_menu[i].childNodes[0].onclick = function(el){
-        //                 let id = action_menu[i].childNodes[0].id
-        //                 document.getElementsByClassName(`action-${id}`)[0].style.display = "block"
-
-        //                 for (let ii=0;ii<block.length;ii++){
-        //                     if (ii % 2 != 0){
-        //                         if (String(block[ii].className).split("-")[1] != id){
-        //                             block[ii].style.display = "none";
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // catch{
-        //     console.log("")
-        // }
-
-    </script>
 
 </html>

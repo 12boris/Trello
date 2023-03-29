@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<form class="container calendar-container" action="{% url 'backend:day_edit' %}" method="post" style="padding:20px;padding-left:32px;">
+<form class="container calendar-container load-animate" action="{% url 'backend:day_edit' %}" method="post" style="padding:20px;padding-left:32px;">
     {% csrf_token %}
 
     <div class="left-action-block" style="width:52%;">

@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="main-container">
+<div class="main-container load-animate">
     <div class="main-cont">
 
         <div class="container text-center main card-container">
@@ -25,7 +25,8 @@
 
                         {% for act in item.action.values %}
                         <li class="li-action">
-                            <div class="progress-div-action" style="width: {{ act.action.progress }}%;
+                            <div class="progress-div-action" style="width: 
+                            {% if act.date_is_bigger and act.action.progress == 0 %}100%;{% else %}{{ act.action.progress }}%;{% endif %}
                             {% if act.date_is_bigger and act.action.progress != 100 %}background-color: red;{% endif %}"></div>
                             <a href="{% url 'backend:action_card' act.action.pk %}" style="color: var(--ds-text,inherit);">{{ act.action.name }}</a>
 
@@ -40,7 +41,7 @@
                         <img src="{% static 'icons/icon-plus.png' %}" class="icon-plus">
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="card-link" data-bs-toggle="modal" data-bs-target="#action" style="border: none; outline: none;">
+                        <button type="button" class="card-link button-action" style="border: none; outline: none;">
                             Добавить действие
                         </button>
                     </div>
@@ -60,38 +61,32 @@
                 </div>
 
                 <!-- Modal action -->
-                <div class="modal fade" id="action" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-
-                            <form method="post" action="{% url 'backend:action_add' %}">
-                                {% csrf_token %}
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Добавление действия</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlInput1" required  class="form-label">Название идеи</label>
-                                        <input name="name-card" class="form-control" id="exampleFormControlInput1">
-
-                                        <label for="exampleFormControlInput1" required  class="form-label">Название</label>
-                                        <input name="name" class="form-control" id="exampleFormControlInput1">
-                                        
-                                        <label for="exampleFormControlInput1" required  class="form-label">Дата</label>
-                                        <input name="date" class="form-control" id="exampleFormControlInput1">
-
-                                        <label for="exampleFormControlInput1" class="form-label">Описание</label>
-                                        <textarea name="describe" class="form-control" id="exampleFormControlInput1" style="height: 100px;resize: inherit;"></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Создать</button>
-                                </div>
-                            </form>
-                            
+                <div class="modal-action" style="display: none;">
+                    <form method="post" action="{% url 'backend:action_add' %}">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" style="margin-bottom: 30px;">Добавление действия</h1>
+                            <button type="button" class="btn-close" style="margin-bottom: 37px;"></button>
                         </div>
-                    </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" required  class="form-label">Название идеи</label>
+                                <input name="name-card" class="form-control" id="exampleFormControlInput1" style="margin-bottom: 20px;">
+
+                                <label for="exampleFormControlInput1" required  class="form-label">Название</label>
+                                <input name="name" class="form-control" style="margin-bottom: 20px;">
+                                
+                                <label for="exampleFormControlInput1" required  class="form-label">Дата дедлайна</label>
+                                <input name="date" class="form-control" id="exampleFormControlInput1" style="margin-bottom: 20px;">
+
+                                <label for="exampleFormControlInput1" class="form-label">Описание</label>
+                                <textarea name="describe" class="form-control" id="exampleFormControlInput1" style="height: 100px;resize: inherit;"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Создать</button>
+                        </div>
+                    </form>
                 </div>
 
             </div>
