@@ -53,6 +53,8 @@ class Action(DataTimeModel):
     describe = models.TextField(verbose_name='Содержание')
     date = models.CharField(verbose_name='Дата окончания', max_length=255)
     progress = models.IntegerField(verbose_name='Прогресс', default=0)
+    complexity = models.IntegerField(verbose_name='сложность', default=0)
+    importance = models.IntegerField(verbose_name='важность', default=0)
 
     def __str__(self) -> str:
         return f'{self.author} {self.card.name}'

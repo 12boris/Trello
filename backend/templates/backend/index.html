@@ -7,11 +7,22 @@
     <div class="main-cont">
 
         <div class="container text-center main card-container">
-            <div class="row" style="overflow-x: scroll;display: flex;flex-wrap: nowrap;height: 100%;">
+            <div class="row" style="overflow-x: scroll;display: flex;flex-wrap: wrap;height: max-content;">
                 
+                <div class="card" style="width: 98%;background: none;padding:0;margin-bottom: 20px;">
+                    <div class="link-add flex-center" style="width: 100%;">
+                        <div style="width: 200px;">
+                            <img src="{% static 'icons/icon-plus-white.png' %}" class="icon-plus" style="width:24px;height:23px;">
+                            <a class="card-link-add" href="{% url 'backend:card_add' %}" style="position: relative;left: -4px;top:-1px;">
+                                Добавить день
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
                 {% for item in card.values %}
 
-                <div class="card" style="width: 18rem;height: max-content;">
+                <div class="card" style="width: 18rem;height: max-content;margin-bottom: 22px;">
 
                     <a href="{% url 'backend:card_delete' item.card.pk %}" class="delete_card">
                         <img src="{% static 'icons/icon-minus.png' %}" style="width: 20px;height: 20px;">
@@ -49,17 +60,6 @@
 
                 {% endfor %}
 
-                <div class="card" style="width: 18rem;background: none;padding:0;">
-                    <div class="link-add">
-                        <div class="card-body body-link-add">
-                            <img src="{% static 'icons/icon-plus-white.png' %}" class="icon-plus" style="width:25px;height:25px;">
-                            <a class="card-link-add" href="{% url 'backend:card_add' %}">
-                                Добавить день
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Modal action -->
                 <div class="modal-action" style="display: none;">
                     <form method="post" action="{% url 'backend:action_add' %}">
@@ -81,6 +81,12 @@
 
                                 <label for="exampleFormControlInput1" class="form-label">Описание</label>
                                 <textarea name="describe" class="form-control" id="exampleFormControlInput1" style="height: 100px;resize: inherit;"></textarea>
+
+                                <label for="exampleFormControlInput1" class="form-label">важность</label>
+                                <textarea name="importance" class="form-control" id="exampleFormControlInput1" style="height: 100px;resize: inherit;"></textarea>
+
+                                <label for="exampleFormControlInput1" class="form-label">сложность</label>
+                                <textarea name="complexity" class="form-control" id="exampleFormControlInput1" style="height: 100px;resize: inherit;"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">

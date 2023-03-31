@@ -19,28 +19,17 @@
                 <p class="card-text" style="white-space: break-spaces;height: 100px;overflow: hidden;">{{ action.describe }}</p>
 
                 <button class="card-add-button action-change-button" type="button" 
-                style="right: 10px;width: 275px;margin-bottom: 40px;">Изменить</button>
+                style="right: 10px;width: 278px;margin-bottom: 40px;">Изменить</button>
 
-                <h4>Прогресс</h4>
-                <form method="post" action="{% url 'backend:action_edit' action.pk %}" class="card-add-form" 
-                style="position: relative;width: 275px;margin-bottom: 40px;">
-                    {% csrf_token %}
-                    <input class="card-add-textarea" name="progress" placeholder="изменить прогресс" style="left: 6px;">
-                    <button class="card-add-button" type="submit" style="right: 5px;width: 120px;">Сохранить</button>
-                </form>
+                <h4 style="color: white;font-weight: 600;">сложность {{ action.complexity }}%</h4>
+                <div class="progress" aria-valuenow="{{ action.complexity }}" style="width: 90%;">
+                    <div class="progress-bar" style="width: {{ action.complexity }}%;"></div>
+                </div>
 
-                <h4>привязать к идее</h4>
-                <form method="post" action="{% url 'backend:action_to_idea' action.pk %}" class="card-add-form" 
-                style="position: relative;width: 275px;">
-                    {% csrf_token %}
-                    <input class="card-add-textarea" name="name" placeholder="изменить прогресс" style="left: 6px;">
-                    <button class="card-add-button" type="submit" style="right: 5px;width: 120px;">Привязать</button>
-                </form>
-
-                <p style="margin-left: 5px;font-weight: 600;color:rgb(33 37 41 / 73%);font-size: 14;">
-                    {% if not idea_action %}пока не связана с идеей
-                    {% else %} связана с идеей: {{ idea_action }} {% endif %}
-                </p>
+                <h4 style="margin-top: 50px;color: white;font-weight: 600;">важность</h4>
+                <div class="progress" aria-valuenow="{{ action.importance }}" style="width: 90%;">
+                    <div class="progress-bar" style="width: {{ action.importance }}%;"></div>
+                </div>
             </div>
 
             <div class="right-action-block" style="display:flex;">
@@ -53,24 +42,48 @@
                 </div>
 
                 <div class="action-comment" style="width:60%;margin-left:65px;">
-                    <h4 class="card-title">комментарии</h4>
-                    <form class="mb-3 comment-box" method="post" action="{% url 'backend:comment_add' action.pk %}">
-                        {% csrf_token %}
-                        <input class="comment-input" name="comment" placeholder="Комментарий">
-                        <button type="submit" class="comment-button">создать</button>
-                    </form>
-                    {% for comment in comments %}
-                    <div style="margin-bottom: 10px;" class="comment">
-                        <div class="comment-header">
-                            <p style="font-size: 15px;" class="comment-date">{{ comment.author }} <span style="display: inline-block;min-width: 4px;"></span> {{ comment.created_at }}</p>
-                            <span style="display: inline-block;min-width: 10px;"></span>
-                            <a href="{% url 'backend:comment_delete' comment.pk %}">удалить</a>
+                    <div class="inline-cont scroll" style="height: 405px;margin-right: -22px;">
+                        <h4 class="card-title">комментарии</h4>
+                        <form class="mb-3 comment-box" method="post" action="{% url 'backend:comment_add' action.pk %}">
+                            {% csrf_token %}
+                            <input class="comment-input" name="comment" placeholder="Комментарий">
+                            <button type="submit" class="comment-button">создать</button>
+                        </form>
+                        {% for comment in comments %}
+                        <div style="margin-bottom: 10px;" class="comment">
+                            <div class="comment-header">
+                                <p style="font-size: 15px;" class="comment-date">{{ comment.author }} <span style="display: inline-block;min-width: 4px;"></span> {{ comment.created_at }}</p>
+                                <span style="display: inline-block;min-width: 10px;"></span>
+                                <a href="{% url 'backend:comment_delete' comment.pk %}">удалить</a>
+                            </div>
+                            <div class="comment-box" style="padding: 8px 12px;width:375px;height:max-content;">
+                                <p style="font-size: 16px;">{{ comment.comment }}</p>
+                            </div>
                         </div>
-                        <div class="comment-box" style="padding: 8px 12px;width:375px;height:max-content;">
-                            <p style="font-size: 16px;">{{ comment.comment }}</p>
-                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
+
+                    <div class="inline-cont" style="overflow-y: hidden;position: absolute;bottom: 0;">
+                        <h4>Прогресс</h4>
+                        <form method="post" action="{% url 'backend:action_edit' action.pk %}" class="card-add-form" 
+                        style="position: relative;margin-bottom: 40px;">
+                            {% csrf_token %}
+                            <input class="card-add-textarea" name="progress" placeholder="изменить прогресс" style="left: 6px;">
+                            <button class="card-add-button" type="submit" style="right: 5px;width: 120px;">Сохранить</button>
+                        </form>
+        
+                        <h4>привязать к идее</h4>
+                        <form method="post" action="{% url 'backend:action_to_idea' action.pk %}" class="card-add-form" 
+                        style="position: relative;">
+                            {% csrf_token %}
+                            <input class="card-add-textarea" name="name" placeholder="изменить прогресс" style="left: 6px;">
+                            <button class="card-add-button" type="submit" style="right: 5px;width: 120px;">Привязать</button>
+                        </form>
+                        <p style="margin-left: 5px;font-weight: 600;color:rgb(33 37 41 / 73%);font-size: 14;">
+                            {% if not idea_action %}пока не связана с идеей
+                            {% else %} связана с идеей: {{ idea_action }} {% endif %}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,10 +105,15 @@
                     
                     <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Дата</label>
                     <input name="date" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.date }}">
+                    
+                    <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Сложность</label>
+                    <input name="complexity" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.complexity }}">`
+
+                    <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Важность</label>
+                    <input name="importance" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.importance }}">
 
                     <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Описание</label>
-                    <textarea name="describe" class="form-control" id="exampleFormControlInput1" 
-                    style="height: 100px;" placeholder="{{ action.describe }}"></textarea>
+                    <textarea name="describe" class="form-control" id="exampleFormControlInput1"></textarea>
                 </div>
             </div>
             <div class="modal-footer">

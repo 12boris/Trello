@@ -20,6 +20,8 @@
                     <h5>дни выполнения</h5>
 
                     <div class="row row-ideas">
+
+                        {% for day in days %}
                         <div class="card" style="width: 18rem;height: max-content;">
 
                             <a href="/backend/card_delete/1/" class="delete_card">
@@ -31,8 +33,6 @@
                                 <h5 class="card-title flex-center">День 1</h5>
                             </div>
                             <ul class="list-group list-group-flush card-cont-action">
-        
-                                
                                 <li class="li-action flex-center">
                                     <div class="progress-div-action" style="width: 100%;"></div>
                                     <a href="/backend/action_card/1/" style="color: var(--ds-text,inherit);">Курсовой проект</a>
@@ -41,137 +41,9 @@
                                         <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
                                     </a>
                                 </li>
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/2/" style="color: var(--ds-text,inherit);">Информатика</a>
-        
-                                    <a href="/backend/action_delete/2/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/3/" style="color: var(--ds-text,inherit);">Погулять</a>
-        
-                                    <a href="/backend/action_delete/3/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/4/" style="color: var(--ds-text,inherit);">узнать о пересдаче</a>
-        
-                                    <a href="/backend/action_delete/4/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
                             </ul>
                         </div>
-
-                        <div class="card" style="width: 18rem;height: max-content;">
-
-                            <a href="/backend/card_delete/1/" class="delete_card">
-                                <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                            </a>
-        
-                            <div class="blur-block"></div>
-                            <div class="card-body">
-                                <h5 class="card-title flex-center">День 1</h5>
-                            </div>
-                            <ul class="list-group list-group-flush card-cont-action">
-        
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/1/" style="color: var(--ds-text,inherit);">Курсовой проект</a>
-        
-                                    <a href="/backend/action_delete/1/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/2/" style="color: var(--ds-text,inherit);">Информатика</a>
-        
-                                    <a href="/backend/action_delete/2/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/3/" style="color: var(--ds-text,inherit);">Погулять</a>
-        
-                                    <a href="/backend/action_delete/3/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/4/" style="color: var(--ds-text,inherit);">узнать о пересдаче</a>
-        
-                                    <a href="/backend/action_delete/4/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="card" style="width: 18rem;height: max-content;">
-
-                            <a href="/backend/card_delete/1/" class="delete_card">
-                                <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                            </a>
-        
-                            <div class="blur-block"></div>
-                            <div class="card-body">
-                                <h5 class="card-title flex-center">День 1</h5>
-                            </div>
-                            <ul class="list-group list-group-flush card-cont-action">
-        
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/1/" style="color: var(--ds-text,inherit);">Курсовой проект</a>
-        
-                                    <a href="/backend/action_delete/1/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/2/" style="color: var(--ds-text,inherit);">Информатика</a>
-        
-                                    <a href="/backend/action_delete/2/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/3/" style="color: var(--ds-text,inherit);">Погулять</a>
-        
-                                    <a href="/backend/action_delete/3/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                                
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/4/" style="color: var(--ds-text,inherit);">узнать о пересдаче</a>
-        
-                                    <a href="/backend/action_delete/4/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        {% endfor %}
                     </div>
 
                     <a href="{% url 'backend:idea_delete' idea.pk %}" class="card-add-button button-idea-add flex-center" style="right: 15px;">удалить идею</a>

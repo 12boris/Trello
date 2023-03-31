@@ -35,6 +35,11 @@ a{
     width: 100%;
 }
 
+.inline-cont{
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .flex-center{
     display: flex;
     justify-content: center;
@@ -64,6 +69,10 @@ a{
     padding: 30px;
     z-index: 0;
 }
+
+/* modal action add */
+
+
 
 /* круговая диаграмма ------------------ */
 
@@ -127,6 +136,21 @@ a{
 
 *{
     text-decoration: none !important;
+}
+
+.navbar-brand{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    height: 44px;
+    overflow: hidden;
+    top: 9px;
+    left: 59px;
+    border-radius: 5px;
+    background-color: #47609a;
+    padding: 4px;
 }
 
 .navbar-brand, .nav-link, .nav-link.active,
@@ -230,7 +254,7 @@ a{
     top: 103px;
     height: 89%;
     left: 330px;
-    max-width: 80%;
+    max-width: 81%;
 }
 
 .row::-webkit-scrollbar {
@@ -345,7 +369,7 @@ a{
     display: block;
     position: absolute;
     top: 7px;
-    left: 0;
+    left: -2px;
     width: 100%;
     height: 89px;
     background: #ebecf0c7;

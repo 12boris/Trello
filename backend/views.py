@@ -8,6 +8,17 @@ import datetime
 import os, shutil
 
 
+def DateIsBigger(action_date):
+    date = datetime.date.today().strftime('%d.%m.%Y')
+
+    try:
+        date_is_bigger = datetime.datetime.strptime(date, '%d.%m.%Y') >= datetime.datetime.strptime(action_date, '%d.%m.%Y')
+    except:
+        date_is_bigger = datetime.datetime.strptime(datetime.date.today().strftime('%d.%m.%y'), '%d.%m.%y') >= datetime.datetime.strptime(action_date, '%d.%m.%y')
+
+    return date_is_bigger
+
+
 def GenIdeasList(cards):
     
     # генератор списка идей.
@@ -26,10 +37,7 @@ def GenIdeasList(cards):
 
         for act in action:
             date = datetime.date.today().strftime('%d.%m.%Y')
-            try:
-                date_is_bigger = datetime.datetime.strptime(date, '%d.%m.%Y') > datetime.datetime.strptime(act.date, '%d.%m.%Y')
-            except:
-                date_is_bigger = datetime.datetime.strptime(datetime.date.today().strftime('%d.%m.%y'), '%d.%m.%y') > datetime.datetime.strptime(act.date, '%d.%m.%y')
+            date_is_bigger = DateIsBigger(act.date)
 
             aa += 1
             action_sl[aa] = {"action": act, "date_is_bigger": date_is_bigger}
@@ -45,7 +53,7 @@ def GenIdeasList(cards):
 def main(request):
     title = "Карточки"
 
-    card = GenIdeasList(Card.objects.all().order_by("created_at"))
+    card = GenIdeasList(Card.objects.all().order_by("-created_at"))
     date = datetime.date.today().strftime('%d.%m.%y')
     image = os.listdir("C:\\Users\\пк\\Documents\\Projects\\Ich\\static\\use_image")[0]
 
@@ -71,6 +79,8 @@ def calendar(request):
             weeks.append(week)
             week = []
             a = 0
+
+    print([i for i in weeks], '\n',  len(weeks))
 
     content = {"title": title, "weeks": weeks, "image": image   } 
 
@@ -192,15 +202,17 @@ def idea_page(request, pk):
 
     idea = Idea.objects.filter(pk=pk).first()
     actions_list = idea.actions
-    actions = []
+    actions, days = [], []
 
     for pk in actions_list.split(" "):
         try:
-            actions.append(Action.objects.filter(pk=pk).first())
+            action = Action.objects.filter(pk=pk).first()
+            actions.append(action)
+            days.append(action.idea)
         except:
             print("hello")
 
-    content = {"title": title, "image": image, "idea": idea, "actions": actions}
+    content = {"title": title, "image": image, "idea": idea, "actions": actions, "days": days}
 
     return render(request, "backend/idea_page.html", content)
 
@@ -256,7 +268,6 @@ def card_delete(request, pk):
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-
 """ действия """
 
 
@@ -266,15 +277,13 @@ def action_card(request, pk):
     action = Action.objects.filter(pk=pk).first()
     comments = Comment.objects.filter(action=action)
     date = datetime.date.today().strftime('%d.%m.%Y')
+    idea_action = ""
 
     for idea in Idea.objects.all():
         if str(pk) in idea.actions.split(" "):
             idea_action = idea.name
     
-    try:
-        date_is_bigger = datetime.datetime.strptime(date, '%d.%m.%Y') > datetime.datetime.strptime(action.date, '%d.%m.%Y')
-    except:
-        date_is_bigger = datetime.datetime.strptime(datetime.date.today().strftime('%d.%m.%y'), '%d.%m.%y') > datetime.datetime.strptime(action.date, '%d.%m.%y')
+    date_is_bigger = DateIsBigger(action.date)
 
     content = {"title": title, "action": action, "date": date, "comments": comments, "image": image, 
                "date_is_bigger": date_is_bigger, "idea_action": idea_action}
@@ -290,6 +299,8 @@ def action_add(request):
     name = request.POST['name']
     date = request.POST['date']
     describe = request.POST['describe']
+    importance = request.POST['importance']
+    complexity = request.POST['complexity']
     author = request.user.username
 
     if str(date).lower() == "завтра":
@@ -298,7 +309,8 @@ def action_add(request):
     if str(date).lower() == "сегодня":
         date = datetime.date.today().strftime('%d.%m.%y')
 
-    new_action = Action.objects.create(name=name, author=author, date=date, describe=describe, card=card)
+    new_action = Action.objects.create(name=name, author=author, date=date, describe=describe, card=card, 
+                                       importance=importance, complexity=complexity)
     new_action.save()
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
@@ -313,7 +325,10 @@ def action_edit(request, pk):
     except:pass
 
     try:
+        if request.POST["importance"]: action.importance = request.POST['importance']
+        if request.POST["complexity"]: action.complexity = request.POST['complexity']
         if request.POST["name"]: action.name = request.POST["name"]
+
         if request.POST["date"]: 
             date = request.POST["date"]
             if str(date).lower() == "завтра":
