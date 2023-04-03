@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                {% for item in card.values %}
+                {% for item in cards_sl.values %}
 
                 <div class="card" style="width: 18rem;height: max-content;margin-bottom: 22px;">
 
@@ -31,6 +31,7 @@
                     <div class="blur-block"></div>
                     <div class="card-body">
                         <h5 class="card-title">{{ item.card.name }}</h5>
+                        <p style="position: absolute;top: 16px;">{{ item.efficiency }}%</p>
                     </div>
                     <ul class="list-group list-group-flush card-cont-action">
 
@@ -38,7 +39,8 @@
                         <li class="li-action">
                             <div class="progress-div-action" style="width: 
                             {% if act.date_is_bigger and act.action.progress == 0 %}100%;{% else %}{{ act.action.progress }}%;{% endif %}
-                            {% if act.date_is_bigger and act.action.progress != 100 %}background-color: red;{% endif %}"></div>
+                            {% if act.date_is_bigger and act.action.progress != 100 and act.action.progress < 50 %}background-color: red;
+                            {% elif act.action.progress > 50 and act.action.progress < 100 and act.date_is_bigger %}background-color: #ED760E;{% endif %}"></div>
                             <a href="{% url 'backend:action_card' act.action.pk %}" style="color: var(--ds-text,inherit);">{{ act.action.name }}</a>
 
                             <a href="{% url 'backend:action_delete' act.action.pk %}" class="delete_action">
@@ -76,17 +78,19 @@
                                 <label for="exampleFormControlInput1" required  class="form-label">Название</label>
                                 <input name="name" class="form-control" style="margin-bottom: 20px;">
                                 
-                                <label for="exampleFormControlInput1" required  class="form-label">Дата дедлайна</label>
-                                <input name="date" class="form-control" id="exampleFormControlInput1" style="margin-bottom: 20px;">
-
                                 <label for="exampleFormControlInput1" class="form-label">Описание</label>
                                 <textarea name="describe" class="form-control" id="exampleFormControlInput1" style="height: 100px;resize: inherit;"></textarea>
 
-                                <label for="exampleFormControlInput1" class="form-label">важность</label>
-                                <textarea name="importance" class="form-control" id="exampleFormControlInput1" style="height: 100px;resize: inherit;"></textarea>
-
-                                <label for="exampleFormControlInput1" class="form-label">сложность</label>
-                                <textarea name="complexity" class="form-control" id="exampleFormControlInput1" style="height: 100px;resize: inherit;"></textarea>
+                                <div style="display: flex;justify-content: space-around;margin-top: 20px;">
+                                    <div style="width: 48%;">
+                                        <label for="exampleFormControlInput1" class="form-label">важность</label>
+                                        <input name="importance" class="form-control" id="exampleFormControlInput1">
+                                    </div>
+                                    <div style="width: 48%;">
+                                        <label for="exampleFormControlInput1" class="form-label">сложность</label>
+                                        <input name="complexity" class="form-control" id="exampleFormControlInput1">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">

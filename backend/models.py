@@ -33,6 +33,9 @@ class Idea(DataTimeModel):
     final_date = models.CharField(verbose_name='Дата окончания', max_length=255, default="")
     progress = models.IntegerField(verbose_name='Прогресс', default=0)
     actions = models.TextField(verbose_name='Действия', default="")
+    complexity = models.IntegerField(verbose_name='сложность', default=0)
+    importance = models.IntegerField(verbose_name='важность', default=0)
+    participants = models.TextField(verbose_name='Действия', default="")
 
     def __str__(self) -> str:
         return f'{self.name}'
@@ -41,6 +44,7 @@ class Idea(DataTimeModel):
 class Card(DataTimeModel):
     author = models.CharField(verbose_name='Никнейм', max_length=22)
     name = models.CharField(verbose_name='Заголовок', max_length=255)
+    efficiency = models.IntegerField(verbose_name="Эффективность", default=0)
 
     def __str__(self) -> str:
         return f'{self.author} {self.name}'
@@ -58,6 +62,21 @@ class Action(DataTimeModel):
 
     def __str__(self) -> str:
         return f'{self.author} {self.card.name}'
+
+
+class ActionToIdeas(DataTimeModel):
+    author = models.CharField(verbose_name='Никнейм', max_length=22)
+    name = models.CharField(verbose_name='Заголовок', max_length=255)
+    describe = models.TextField(verbose_name='Содержание')
+    date = models.CharField(verbose_name='Дата окончания', max_length=255)
+    progress = models.IntegerField(verbose_name='Прогресс', default=0)
+    complexity = models.IntegerField(verbose_name='сложность', default=0)
+    importance = models.IntegerField(verbose_name='важность', default=0)
+    is_in_plans = models.BooleanField(verbose_name='В планах', default=True)
+    idea = models.ForeignKey(Idea, verbose_name="Идея", on_delete=models.CASCADE, default="")
+
+    def __str__(self) -> str:
+        return f'{self.author}'
 
 
 class Comment(DataTimeModel):

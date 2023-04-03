@@ -13,15 +13,13 @@
             <div class="left-action-block">
                 <h3 class="card-title">{{ action.name }}</h3>
                 <h6 class="card-subtitle mb-2 text-muted under-action-text">в списке {{ action.card.name }}</h6>
-                <h5 class="card-title">Дата окончания дедлайна</h5>
-                <p class="card-text under-action-text">{{ action.date }}</p>
                 <h5 class="card-title">Описание</h5>
                 <p class="card-text" style="white-space: break-spaces;height: 100px;overflow: hidden;">{{ action.describe }}</p>
 
                 <button class="card-add-button action-change-button" type="button" 
                 style="right: 10px;width: 278px;margin-bottom: 40px;">Изменить</button>
 
-                <h4 style="color: white;font-weight: 600;">сложность {{ action.complexity }}%</h4>
+                <h4 style="color: white;font-weight: 600;">Сложность</h4>
                 <div class="progress" aria-valuenow="{{ action.complexity }}" style="width: 90%;">
                     <div class="progress-bar" style="width: {{ action.complexity }}%;"></div>
                 </div>
@@ -37,8 +35,9 @@
                 <div class="action-main" style="width:25%;">   
                     <h4 style="display:flex;justify-content:center;margin-bottom: 22px;">прогресс</h4>
                     <div class="pie animate no-round" style="--p:{{ action.progress }};{% if action.progress == 0 %}--p:100;{% endif %}
-                    {% if action.progress == 100 %}--c:#5ec865;{% elif date_is_bigger %}--c:#e12424;
-                    {% elif action.progress == 0 %}--c:#95afff;{% else %}--c:#799aff;{% endif %}--b:15px">{{ action.progress }}%</div>
+                    {% if action.progress == 100 %}--c:#5ec865;{% elif action.progress > 50 and action.progress < 100 and date_is_bigger %}--c:#ff6300;
+                    {% elif date_is_bigger %}--c:#e12424;{% elif action.progress == 0 %}--c:#95afff;
+                    {% else %}--c:#799aff;{% endif %}--b:15px">{{ action.progress }}%</div>
                 </div>
 
                 <div class="action-comment" style="width:60%;margin-left:65px;">
@@ -106,24 +105,28 @@
                     <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Дата</label>
                     <input name="date" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.date }}">
                     
-                    <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Сложность</label>
-                    <input name="complexity" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.complexity }}">`
-
-                    <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Важность</label>
-                    <input name="importance" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.importance }}">
+                    <div style="display: flex;justify-content: space-around;margin-top: 20px;">
+                        <div style="width: 48%;">
+                            <label for="exampleFormControlInput1" class="form-label">важность</label>
+                            <input name="importance" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.importance }}">
+                        </div>
+                        <div style="width: 48%;">
+                            <label for="exampleFormControlInput1" class="form-label">сложность</label>
+                            <input name="complexity" class="form-control" id="exampleFormControlInput1" placeholder="{{ action.complexity }}">
+                        </div>
+                    </div>
 
                     <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Описание</label>
-                    <textarea name="describe" class="form-control" id="exampleFormControlInput1"></textarea>
+                    <textarea name="describe" class="form-control" id="exampleFormControlInput1" 
+                    placeholder="{{ action.describe }}"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Изменить</button>
             </div>
         </form>
-
+        
     </div>
-
-
     
 </div>
 

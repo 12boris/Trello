@@ -6,6 +6,11 @@
 <div class="container action-container load-animate" style="width:1320px;">
     
     <div class="card action-card">
+
+        <a class="action-close" href="{% url 'backend:ideas' %}" style="right: 8px;">
+            <img src="{% static 'icons/icon-close-action.png' %}" class="icon-plus">
+        </a>
+
         <div class="card-body card-body-action">
             <div class="left-action-block flex-center" style="width: 30%;padding:0 20px 0 20px;overflow: hidden;align-items: flex-start;">
                 <h3>идея</h3>
@@ -17,36 +22,11 @@
                     <h5>описание</h5>
                     <p style="margin-bottom: 20px;height: 127px;overflow: hidden;">{{ idea.describe }}</p>
 
-                    <h5>дни выполнения</h5>
-
-                    <div class="row row-ideas">
-
-                        {% for day in days %}
-                        <div class="card" style="width: 18rem;height: max-content;">
-
-                            <a href="/backend/card_delete/1/" class="delete_card">
-                                <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                            </a>
-        
-                            <div class="blur-block"></div>
-                            <div class="card-body">
-                                <h5 class="card-title flex-center">День 1</h5>
-                            </div>
-                            <ul class="list-group list-group-flush card-cont-action">
-                                <li class="li-action flex-center">
-                                    <div class="progress-div-action" style="width: 100%;"></div>
-                                    <a href="/backend/action_card/1/" style="color: var(--ds-text,inherit);">Курсовой проект</a>
-        
-                                    <a href="/backend/action_delete/1/" class="delete_action">
-                                        <img src="/static/icons/icon-minus.png" style="width: 20px;height: 20px;">
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        {% endfor %}
-                    </div>
-
-                    <a href="{% url 'backend:idea_delete' idea.pk %}" class="card-add-button button-idea-add flex-center" style="right: 15px;">удалить идею</a>
+                    <button type="submit" class="action-change-button card-add-button button-idea-edit flex-center" style="width: 100%;
+                    font-weight: 600;font-family: 'Montserrat' !important;font-size: 17px;right:20px;">изменить</button>
+                    
+                    <a href="{% url 'backend:idea_delete' idea.pk %}" class="card-add-button button-idea-add flex-center" 
+                    style="right: 15px;">удалить идею</a>
                 </div>
             </div>
 
@@ -59,25 +39,137 @@
 
             <div class="idea-actions">
                 <div class="w-100 flex-center"><h3>действия</h3></div>
+                <div class="idea-cont-vis load" style="position: relative;left: 20px;">
                 
-                <div class="action-list" style="margin-left: 40px">
+                    <div class="idea-actions-menu">
+                        <button>открыть в trello</button>
+                        <button class="actions-to-idea-add">добавить действие</button>
+                    </div>
+                    
+                    <ul class="list-group list-group-flush card-cont-action action-list" style="margin-left: 40px"></ul>
+                        {% for action in actions %}
+                        <a href="">
+                            <div class="action-idea-cont">
+                                <div class="action-idea-name w-100">
+                                    {{ action.card.name }}
+                                </div>
+                                <div class="action-idea w-100">
+                                    {{ action.name }}
+                                    <div class="action-idea-progress" style="width: {{ action.progress }}%;"></div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+    
+                    </ul>
+                </div>
 
-                    {% for action in actions %}
-                    <a href="">
-                        <div class="action-cont">
-                            <p class="card-name flex-center">{{ action.card.name }}</p>
-                            <div class="action-name flex-center">
-                                {{ action.name }}
-                                <div class="bottom-block abs.bot-0"></div>
+                <!-- add action -------------------------------------->
+                <div class="actions-to-idea-add-cont load" style="visibility: hidden;position: relative;left: 20px;">
+                    <form action="{% url 'backend:action_to_idea_add' idea.pk %}" method="post" class="actions-to-idea-add card w-100" style="width: 18rem;">
+                        {% csrf_token %}
+                        <a class="action-close" href="" style="right: 8px;">
+                            <img style="height: 20px;width: 20px;" src="/static/icons/icon-close-action.png" class="icon-plus">
+                        </a>
+                        <h5 class="flex-center">добавление действий</h5>
+                        <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Название</label>
+                        <input name="name" class="form-control" id="exampleFormControlInput1">
+                        
+                        <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Дата</label>
+                        <input name="final_date" class="form-control" id="exampleFormControlInput1">
+                        
+                        <div style="display: flex;justify-content: space-around;margin-top: 20px;">
+                            <div style="width: 48%;">
+                                <label for="exampleFormControlInput1" class="form-label">важность</label>
+                                <input name="importance" class="form-control" id="exampleFormControlInput1">
+                            </div>
+                            <div style="width: 48%;">
+                                <label for="exampleFormControlInput1" class="form-label">сложность</label>
+                                <input name="complexity" class="form-control" id="exampleFormControlInput1">
                             </div>
                         </div>
-                    </a>
-                    {% endfor %}
+    
+                        <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Описание</label>
+                        <textarea name="describe" class="form-control" id="exampleFormControlInput1"></textarea>
+                        <button style="margin-top: 20px;" type="submit" class="btn btn-primary">добавить</button>
+                        <div class="add-algoritm-button w-100 flex-center">добавить алгоритм</div>
+                    </form>
+                </div>
 
+                <!-- algoritm ---------------------------------------->
+                <div class="algoritm-idea-action-add-cont load" style="visibility: hidden;position: relative;left: 20px;">
+                    <form action="{% url 'backend:action_to_idea_add' idea.pk %}" method="post" class="actions-to-idea-add card w-100" style="width: 18rem;">
+                        {% csrf_token %}
+                        <a class="action-close" href="" style="right: 8px;">
+                            <img style="height: 20px;width: 20px;" src="/static/icons/icon-close-action.png" class="icon-plus">
+                        </a>
+                        <h5 class="flex-center">алгоритм</h5>
+                        <select name="algorithm" class="form-control"></select>
+                        
+                        <h5 class="flex-center">действие</h5>
+                        <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Название</label>
+                        <input name="name" class="form-control" id="exampleFormControlInput1">
+                        
+                        <div style="display: flex;justify-content: space-around;margin-top: 20px;">
+                            <div style="width: 48%;">
+                                <label for="exampleFormControlInput1" class="form-label">важность</label>
+                                <input name="importance" class="form-control" id="exampleFormControlInput1">
+                            </div>
+                            <div style="width: 48%;">
+                                <label for="exampleFormControlInput1" class="form-label">сложность</label>
+                                <input name="complexity" class="form-control" id="exampleFormControlInput1">
+                            </div>
+                        </div>
+    
+                        <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Описание</label>
+                        <textarea name="describe" class="form-control" id="exampleFormControlInput1"></textarea>
+                        <button style="margin-top: 20px;" type="submit" class="btn btn-primary">добавить</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal action -->
+    <div class="modal-action-edit modal-action" style="display: none;">
+        
+        <form method="post" action="{% url 'backend:idea_edit' idea.pk %}" style="margin: 0;">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Изменение данных действия</h1>
+                <button type="button" class="btn-close-action btn-close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Название</label>
+                    <input name="name" class="form-control" id="exampleFormControlInput1" placeholder="{{ idea.name }}">
+                    
+                    <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Дата</label>
+                    <input name="final_date" class="form-control" id="exampleFormControlInput1" placeholder="{{ idea.final_date }}">
+                    
+                    <div style="display: flex;justify-content: space-around;margin-top: 20px;">
+                        <div style="width: 48%;">
+                            <label for="exampleFormControlInput1" class="form-label">важность</label>
+                            <input name="importance" class="form-control" id="exampleFormControlInput1" placeholder="{{ idea.importance }}">
+                        </div>
+                        <div style="width: 48%;">
+                            <label for="exampleFormControlInput1" class="form-label">сложность</label>
+                            <input name="complexity" class="form-control" id="exampleFormControlInput1" placeholder="{{ idea.complexity }}">
+                        </div>
+                    </div>
+
+                    <label for="exampleFormControlInput1" class="form-label" style="margin-top: 20px;">Описание</label>
+                    <textarea name="describe" class="form-control" id="exampleFormControlInput1"
+                    placeholder="{{ idea.describe }}"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Изменить</button>
+            </div>
+        </form>
+
+    </div>
+
 </div>
 
 {% endblock %}

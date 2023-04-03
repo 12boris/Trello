@@ -21,9 +21,12 @@ urlpatterns = [
     path("ideas/", backend.ideas, name="ideas"),
     path("idea_add/", backend.idea_add, name="idea_add"),
     path("idea_delete/<int:pk>/", backend.idea_delete, name="idea_delete"),
+    path("idea_edit/<int:pk>/", backend.idea_edit, name="idea_edit"),
     path("idea_page/<int:pk>/", backend.idea_page, name="idea_page"),
     path("activate_idea/<int:pk>/", backend.activate_idea, name="activate_idea"),
+    
     path("action_to_idea/<int:pk>/", backend.action_to_idea, name="action_to_idea"),
+    path("action_to_idea_add/<int:pk>/", backend.action_to_idea_add, name="action_to_idea_add"),
 
     path("card_add/", backend.card_add, name="card_add"),
     path("card_delete/<int:pk>/", backend.card_delete, name="card_delete"),

@@ -135,7 +135,7 @@
                 console.log("")
             }
 
-            // idea ----------------------------
+            // idea -----------------------------------------
             
             try{
                 button_idea = document.getElementsByClassName('button-idea-add')[0]
@@ -145,6 +145,41 @@
                     block.style.display = "block"
                     button_idea.style.display = "none"
                     card_ideas.style.display = "none"
+                }
+            }
+            catch{
+                console.log("")
+            }
+
+            // actions to idea -------------------------------
+
+            try{
+                action_to_idea_button = document.getElementsByClassName("actions-to-idea-add")[0]
+                console.log(action_to_idea_button)
+                action_to_idea_button.onclick = function(el){
+                    block = document.getElementsByClassName('actions-to-idea-add-cont')[0]
+                    block_vis = document.getElementsByClassName("idea-cont-vis")[0]
+                    block.style.visibility = "visible"
+                    block_vis.style.height = 0
+                    block_vis.style.visibility = "hidden"
+                }
+            }
+            catch{
+                console.log("")
+            }
+
+            try{
+                add_algoritm_button = document.getElementsByClassName("add-algoritm-button")[0]
+                console.log(add_algoritm_button)
+                add_algoritm_button.onclick = function(el){
+                    block = document.getElementsByClassName('algoritm-idea-action-add-cont')[0]
+                    block_vis = document.getElementsByClassName("idea-cont-vis")[0]
+                    block_vis_2 = document.getElementsByClassName('actions-to-idea-add-cont')[0]
+                    block.style.visibility = "visible"
+                    block_vis.style.height = 0
+                    block_vis.style.visibility = "hidden"
+                    block_vis_2.style.height = 0
+                    block_vis_2.style.visibility = "hidden"
                 }
             }
             catch{
